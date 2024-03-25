@@ -4,8 +4,8 @@ import {Entity} from 'aframe-react';
 
 AFRAME.registerComponent('drag-rotate-component',{
         schema : {
-                yawSpeed : {default:0.05},
-                pitchSpeed : {default:0.05}
+                yawSpeed : {default:0.01},
+                pitchSpeed : {default:0.01}
         },
         init : function(){
           this.ifMouseDown = false;
@@ -58,8 +58,6 @@ const ModelView = ({geomotry='a-box'}) => (
                 {/* <Entity primitive='a-plane' color='lightBlue' position='0 0 -4' rotation='-90 0 0' scale='100 100 100' /> */}
                 {/* <Entity primitive='a-sky' color="lightGrey" /> */}
                 <Entity primitive={geomotry} drag-rotate-component='' color='red' position='0 0.5 0' scale="1 1 1" />
-                {/* <Entity primitive='a-sphere' rotation='0 0 0' color='blue' position='0 -0.5 0' scale="1 1 1" /> */}
-                
         </a-scene>
         </div>
 );
