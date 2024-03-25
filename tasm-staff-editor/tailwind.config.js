@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}",],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'TASM-bg': "url('../../shared/images/TASMbg.png')",
+      }
+    },
   },
   plugins: [],
 }

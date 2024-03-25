@@ -7,7 +7,7 @@ import Nav from './components/nav.js';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-TASM-bg">
       <Nav />
       <ExhibitForm />
     </div>
