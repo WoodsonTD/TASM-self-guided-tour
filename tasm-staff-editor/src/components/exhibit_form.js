@@ -12,7 +12,13 @@ class ExhibitForm extends React.Component {
                 </label>
                 <label>
                     Media Type:
-                    <input type="text" name="mediaType" />
+                    <select name='mediaType'>
+                        <option value='image'>Image</option>
+                        <option value='video'>Video</option>
+                        <option value='audio'>Audio</option>
+                        <option value='text'>None</option>
+                    </select>
+                    <input type="list" name="mediaType" />
                 </label>
                 <label>
                     Media Link:
