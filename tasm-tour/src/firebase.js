@@ -6,7 +6,6 @@ import 'firebase/analytics';
 
 const { initializeApp, getAnalytics } = firebase;
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyC4GbeC5Wz7LtxVgdWzN7sOAdz10MjSlrI",
     authDomain: "tasm-tour.firebaseapp.com",
