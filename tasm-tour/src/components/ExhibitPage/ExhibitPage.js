@@ -6,69 +6,69 @@ import ModelView from '../AFrame/ModelView';
 import ButtonPanel from '../ButtonPanel/ButtonPanel';
 
 export default function ExhibitPage({ exhibitID }) {
-        const [exhibit, setExhibit] = useState(null);
-        const [loading, setLoading] = useState(true);
-        const [error, setError] = useState(null);
+  const [exhibit, setExhibit] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-        useEffect(() => {
-                const fetchData = async () => {
-                        try {
-                                const db = getFirestore(app);
-                                const exhibitRef = doc(db, 'exhibits', exhibitID);
-                                const exhibitSnapshot = await getDoc(exhibitRef);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const db = getFirestore(app);
+        const exhibitRef = doc(db, 'exhibits', exhibitID);
+        const exhibitSnapshot = await getDoc(exhibitRef);
 
-                                if (exhibitSnapshot.exists()) {
-                                        setExhibit(exhibitSnapshot.data());
-                                } else {
-                                        setError('Exhibit not found');
-                                }
-
-                                setLoading(false);
-                        } catch (error) {
-                                setError('Failed to fetch exhibit data');
-                                setLoading(false);
-                        }
-                };
-
-                fetchData();
-        }, [exhibitID]);
-
-        if (loading) {
-                return <div>Loading...</div>;
+        if (exhibitSnapshot.exists()) {
+          setExhibit(exhibitSnapshot.data());
+        } else {
+          setError('Exhibit not found');
         }
 
-        if (error) {
-                return <div>Error: {error}</div>;
-        }
+        setLoading(false);
+      } catch (error) {
+        setError('Failed to fetch exhibit data');
+        setLoading(false);
+      }
+    };
 
-        if (!exhibit) {
-                return <div>Exhibit not found</div>;
-        }
+    fetchData();
+  }, [exhibitID]);
 
-        return (
-                <div className="ExhibitPage">
-                        <ExhibitTitle title={exhibit.title} />
-                        <ModelView {...exhibit.mediaData} />
-                        <p>{exhibit.text}</p>
-                        <FurtherReading furtherReading={exhibit.furtherReading} />
-                        <ButtonPanel />
-                </div>
-        );
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!exhibit) {
+    return <div>Exhibit not found</div>;
+  }
+
+  return (
+    <div className="">
+      <ExhibitTitle title={exhibit.title} />
+      <ModelView {...exhibit.mediaData} />
+      <p>{exhibit.text}</p>
+      <FurtherReading furtherReading={exhibit.furtherReading} />
+      <ButtonPanel />
+    </div>
+  );
 }
 
 export function FurtherReading({ furtherReading }) {
-        return (
-                <div className="FurtherReading">
-                        <h2>Further Reading</h2>
-                        <ul>
-                                {furtherReading.map((item, index) => (
-                                        <li key={index}>
-                                                <a target="blank" href={item.link}>
-                                                        {item.title}
-                                                </a>
-                                        </li>
-                                ))}
-                        </ul>
-                </div>
-        );
+  return (
+    <div className="FurtherReading">
+      <h2 className="text-5xl text-black">Further Reading</h2>
+      <ul>
+        {furtherReading.map((item, index) => (
+          <li key={index}>
+            <a target="blank" href={item.link}>
+              {item.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
