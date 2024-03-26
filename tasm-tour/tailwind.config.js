@@ -28,7 +28,13 @@ module.exports = {
         darkBlue: "#263777",
         darkRed: "#761D21",
         red: "#D3242C",
-      }
+      },
+      fontFamily: {
+        exo2: ['"Exo 2"', 'sans-serif']
+      },
+      backgroundImage: {
+        'tasm-header-bg': "url('../../shared/images/Header.svg')",
+      },
     },
   },
   plugins: [],

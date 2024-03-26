@@ -1,10 +1,13 @@
 import React from 'react';
+import Header from './components/Header/Header';
+import ExhibitPage from './components/ExhibitPage/ExhibitPage';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <h1 className="text-6xl text-red">TASM Self-Guided Tour</h1>
+    <Header />
+    <ExhibitPage />
     </div>
   );
 }
