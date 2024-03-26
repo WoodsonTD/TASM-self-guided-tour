@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { app } from '../firebase';
+import { app } from '../../firebase';
 import ExhibitTitle from '../ExhibitTitle/ExhibitTitle';
 import ModelView from '../AFrame/ModelView';
 import ButtonPanel from '../ButtonPanel/ButtonPanel';
