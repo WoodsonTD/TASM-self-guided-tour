@@ -1,6 +1,7 @@
 import React from 'react';
 import AFRAME from 'aframe';
-import {Entity} from 'aframe-react';
+import {Entity, Scene} from 'aframe-react';
+import model from '../../assets/3d/models/Voyager.gltf';
 
 AFRAME.registerComponent('drag-rotate-component',{
         schema : {
@@ -47,19 +48,28 @@ AFRAME.registerComponent('drag-rotate-component',{
         }
       });
 
-const ModelView = ({geomotry='a-box'}) => (
-        <div style={{height:'500px',alignSelf:'center',display:'flex', margin:'auto'}}> 
-        <a-scene 
+const ModelView = ({geometry="primative:box",texture}) => {
+        console.log(model);
+        return (
+        <div style={{height:'500px',alignSelf:'center',display:'flex', margin:'auto'}}>
+        <Scene
                 embedded
                 xr-mode-ui='enabled: false'
                 >
                 <canvas className='a-canvas' style={{height:"100%"}}></canvas>
-                <a-camera position='0 0 2' rotation='0 0 0' wasd-controls='enabled:false' look-controls="enabled:false"></a-camera>
-                {/* <Entity primitive='a-plane' color='lightBlue' position='0 0 -4' rotation='-90 0 0' scale='100 100 100' /> */}
+                <a-camera position='0 0 2' rotation='0 0 0'
+                wasd-controls='enabled:false' look-controls="enabled:false"
+                />
+
                 {/* <Entity primitive='a-sky' color="lightGrey" /> */}
-                <Entity primitive={geomotry} drag-rotate-component='' color='red' position='0 0.5 0' scale="1 1 1" />
-        </a-scene>
+                <a-gltf-model src={model} drag-rotate-component='' color='red' position='0 0 0' scale="1 1 1" />
+                {/* <Entity primitive="a-box" drag-rotate-component='' color='red' position='0 0.5 0' scale="1 1 1" /> */}
+        </Scene>
         </div>
-);
+);}
+
+const errorLog = (error) => {
+        console.log("Oggal:" + error);
+}
 
 export default ModelView;
