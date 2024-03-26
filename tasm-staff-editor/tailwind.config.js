@@ -27,6 +27,8 @@ module.exports = {
       darkBlue: "#263777",
       darkRed: "#761D21",
       red: "#D3242C",
+      white: "#FFFFFF",
+      gray: "#D9D9D9",
     },
     fontFamily: {
       exo2: ['"Exo 2"', 'sans-serif']

@@ -1,3 +1,4 @@
+import { initializeApp } from 'firebase/app';
 import firebase from 'firebase/app';
 import 'firebase/analytics';
 // import 'firebase/hosting';
@@ -5,8 +6,6 @@ import 'firebase/analytics';
 
 const { initializeApp, getAnalytics } = firebase;
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: "AIzaSyC4GbeC5Wz7LtxVgdWzN7sOAdz10MjSlrI",
     authDomain: "tasm-tour.firebaseapp.com",
@@ -17,6 +16,14 @@ const firebaseConfig = {
     measurementId: "G-SDPB3H33EV"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let app, analytics;
+
+try {
+    // Initialize Firebase
+    app = initializeApp(firebaseConfig);
+    analytics = getAnalytics(app);
+} catch (error) {
+    console.error('Error initializing Firebase:', error);
+}
+
+export { app, analytics };
