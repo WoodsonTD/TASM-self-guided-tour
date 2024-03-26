@@ -1,7 +1,7 @@
 import React from 'react';
 import AFRAME from 'aframe';
-import {Entity, Scene} from 'aframe-react';
-import model from '../../assets/3d/models/Voyager.gltf';
+import {Scene} from 'aframe-react';
+import ModelColletion  from '../../ModelHelper';
 
 AFRAME.registerComponent('drag-rotate-component',{
         schema : {
@@ -48,8 +48,10 @@ AFRAME.registerComponent('drag-rotate-component',{
         }
       });
 
-const ModelView = ({geometry="primative:box",texture}) => {
-        console.log(model);
+const ModelView = ({modelID,sky}) => {
+        console.log("model: "+modelID);
+        const _model = modelID? ModelColletion[modelID].model : null; 
+
         return (
         <div style={{height:'500px',alignSelf:'center',display:'flex', margin:'auto'}}>
         <Scene
@@ -62,14 +64,11 @@ const ModelView = ({geometry="primative:box",texture}) => {
                 />
 
                 {/* <Entity primitive='a-sky' color="lightGrey" /> */}
-                <a-gltf-model src={model} drag-rotate-component='' color='red' position='0 0 0' scale="1 1 1" />
+                <a-gltf-model src={_model} drag-rotate-component='' color='red' position='0 0 0' scale="1 1 1" />
+                {sky? <a-sky color={sky} /> : null}
                 {/* <Entity primitive="a-box" drag-rotate-component='' color='red' position='0 0.5 0' scale="1 1 1" /> */}
         </Scene>
         </div>
 );}
-
-const errorLog = (error) => {
-        console.log("Oggal:" + error);
-}
 
 export default ModelView;
