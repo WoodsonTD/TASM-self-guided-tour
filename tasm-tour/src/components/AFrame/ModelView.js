@@ -51,7 +51,7 @@ const ModelView = ({ modelID, sky }) => {
   const _model = modelID ? ModelColletion[modelID].model : null;
 
   return (
-    <div style={{ height: '500px', alignSelf: 'center', display: 'flex', margin: 'auto',flexDirection:'column',textAlign:'center' }}>
+    <div className='w-1/2' style={{ height: '500px', alignSelf: 'center', display: 'flex', margin: 'auto',flexDirection:'column',textAlign:'center' }}>
       <Scene
         embedded
         xr-mode-ui='enabled: false'
