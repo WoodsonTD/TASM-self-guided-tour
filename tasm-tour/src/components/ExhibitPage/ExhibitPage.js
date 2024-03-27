@@ -1,51 +1,74 @@
-import ExhibitTitle from "../ExhibitTitle/ExhibitTitle";
-import ModelView from "../AFrame/ModelView";
-import ButtonPanel from "../ButtonPanel/ButtonPanel";
+import { useState, useEffect } from 'react';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { app } from '../../firebase';
+import ExhibitTitle from '../ExhibitTitle/ExhibitTitle';
+import ModelView from '../AFrame/ModelView';
+import ButtonPanel from '../ButtonPanel/ButtonPanel';
 
-export default function ExhibitPage({ exhibitID}) {
-        //This data will be fetched from the database
-        // placeholder data for now!
-const dataValue = getData(exhibitID);
-const title = dataValue.title;
+export default function ExhibitPage({ exhibitID }) {
+  const [exhibit, setExhibit] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-        return (
-                <div className="ExhibitPage">
-                <ExhibitTitle title={title} />
-                <ModelView {... dataValue.mediaData} />
-                <p>{dataValue.text}</p>
-                <FurtherReading furtherReading={dataValue.furtherReading}/>
-                <ButtonPanel />
-                </div>
-        );      
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const db = getFirestore(app);
+        const exhibitRef = doc(db, 'exhibits', exhibitID);
+        const exhibitSnapshot = await getDoc(exhibitRef);
+
+        if (exhibitSnapshot.exists()) {
+          setExhibit(exhibitSnapshot.data());
+        } else {
+          setError('Exhibit not found');
+        }
+
+        setLoading(false);
+      } catch (error) {
+        setError('Failed to fetch exhibit data');
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [exhibitID]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!exhibit) {
+    return <div>Exhibit not found</div>;
+  }
+
+  return (
+    <div className="">
+      <ExhibitTitle title={exhibit.title} />
+      <ModelView {...exhibit.mediaData} />
+      <p>{exhibit.text}</p>
+      <FurtherReading furtherReading={exhibit.furtherReading} />
+      <ButtonPanel />
+    </div>
+  );
 }
 
-export function FurtherReading({furtherReading})
-{
-        return (
-                <div className="FurtherReading">
-                        <h2>Further Reading</h2>
-                        <ul>
-                                {furtherReading.map((item,index) => (
-                                        <li key={index}><a target="blank" href={item.link}>{item.title}</a></li>
-                                ))}
-                        </ul>
-                </div>
-        );
-
-}
-
-// this is a placeholder function for fetching data from the database
-function getData(exhibitID) {
-        // fetch data from the database
-        // return data
-        return ({
-                title:exhibitID,
-                 mediaType:'Model',
-                  mediaData:{geometry:'a-box'},
-                   text:'CONTENT TEXT HERE',
-                    furtherReading:[
-                        {title:'Wiki',link:'https://en.wikipedia.org'},
-                        {title:'dumby text',link:"https://www.google.com/"}
-                        ]
-                });
+export function FurtherReading({ furtherReading }) {
+  return (
+    <div className="FurtherReading">
+      <h2 className="text-5xl text-black">Further Reading</h2>
+      <ul>
+        {furtherReading.map((item, index) => (
+          <li key={index}>
+            <a target="blank" href={item.link}>
+              {item.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }

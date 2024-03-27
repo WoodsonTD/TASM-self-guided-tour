@@ -1,10 +1,9 @@
+// src/firebase.js
 import { initializeApp } from 'firebase/app';
-import firebase from 'firebase/app';
-import 'firebase/analytics';
+import { getAnalytics } from 'firebase/analytics';
+// import 'firebase/analytics';
 // import 'firebase/hosting';
 // import 'firebase/auth';
-
-const { initializeApp, getAnalytics } = firebase;
 
 const firebaseConfig = {
     apiKey: "AIzaSyC4GbeC5Wz7LtxVgdWzN7sOAdz10MjSlrI",
@@ -16,14 +15,7 @@ const firebaseConfig = {
     measurementId: "G-SDPB3H33EV"
 };
 
-let app, analytics;
-
-try {
-    // Initialize Firebase
-    app = initializeApp(firebaseConfig);
-    analytics = getAnalytics(app);
-} catch (error) {
-    console.error('Error initializing Firebase:', error);
-}
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 export { app, analytics };
