@@ -1,5 +1,5 @@
 import Button from './Button';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 export default function ButtonPanel({ exhibitID }) {
   return (
