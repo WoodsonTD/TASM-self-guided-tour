@@ -34,21 +34,21 @@ class ExhibitForm extends React.Component {
     render() {
         const { title, id, mediaType, mediaLink, audioLink, qrLink, content, articleLink } = this.state;
         return (
-        <div>
+        <div className='text-lg'>
             <h1>Exhibit Form</h1>
-            <form className="mt-2 flex-column justify-center rounded-lg px-6 py-10" onSubmit={this.handleSubmit}>
-                <label>
+            <form className="mt-6 mx-14 justify-center rounded-lg px-6 py-10 md:mx-32 lg:mx-36" onSubmit={this.handleSubmit}>
+                <label className='block mb-4'>
                     Title:
-                    <input type="text" name="title" value={title} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:text-sm sm:leading-6" />
+                    <input type="text" name="title" value={title} onChange={this.handleChange} className="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6" />
                 </label>
                 <div>
-                    <label>
+                    <label className='block mb-4'>
                         ID:
-                        <input type="text" name="id" value={id} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:text-sm sm:leading-6" />
+                        <input type="text" name="id" value={id} onChange={this.handleChange} className="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6" />
                     </label>
                     <label>
                         Media Type:
-                        <select name='mediaType' value={mediaType} onChange={this.handleChange} className='text-darkBlue block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:max-w-xs sm:text-sm sm:leading-6'>
+                        <select name='mediaType' value={mediaType} onChange={this.handleChange} className='text-darkBlue block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:max-w-xs sm:leading-6'>
                             <option value='image'>Image</option>
                             <option value='video'>Video</option>
                             <option value='audio'>Audio</option>
@@ -57,17 +57,17 @@ class ExhibitForm extends React.Component {
                     </label>
                 </div>
                 <br></br>
-                <label>
+                <label className='block mb-4'>
                     Media Link:
-                    <input type="text" name="mediaLink" value={mediaLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:text-sm sm:leading-6" />
+                    <input type="text" name="mediaLink" value={mediaLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6" />
                 </label>
-                <label>
+                <label className='block mb-4'>
                     Audio Link:
-                    <input type="text" name="audioLink" value={audioLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:text-sm sm:leading-6" />
+                    <input type="text" name="audioLink" value={audioLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6" />
                 </label>
-                <label>
+                <label className='block mb-4'>
                     QR Link:
-                    <input type="text" name="qrLink" value={qrLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:text-sm sm:leading-6" />
+                    <input type="text" name="qrLink" value={qrLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6" />
                 </label>
                 <label>
                     Content:
@@ -78,21 +78,20 @@ class ExhibitForm extends React.Component {
                   name="content"
                   onChange={this.handleChange}
                   rows={3}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:text-sm sm:leading-6"
+                  className="block mb-6 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
                   defaultValue={''}
                   value={content}
                 />
                 </div>
-                <p className='text-center'>Additional reading</p>
-                <label>
+                <p className='text-center text-xl block mb-4'>Additional reading</p>
+                <label className='block mb-4'>
                     Link:
-                    <input type="text" name="articleLink" value={articleLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:text-sm sm:leading-6" />
+                    <input type="text" name="articleLink" value={articleLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6" />
                 </label>
-                <label>
+                <label className='block mb-4'>
                     Link:
-                    <input type="text" name="articleLink" value={articleLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:text-sm sm:leading-6" />
+                    <input type="text" name="articleLink" value={articleLink} onChange={this.handleChange} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6" />
                 </label>
-                <button type="submit" name='new'>New</button>
                 <button type="submit" name='submit'>Submit</button>
             </form>
         </div>
