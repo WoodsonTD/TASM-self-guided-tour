@@ -1,9 +1,11 @@
 import React from 'react';
 
-function Button({ label, className, onClick, icon, type }) {
+function Button({ label, className, onClick, icon: Icon, iconProps = {}, iconPosition = 'left', type = 'button' }) {
   return (
-    <button className={className} onClick={onClick} type={type}>
-      {/* {icon && <FontAwesomeIcon icon={icon} />} {label} */}
+    <button className={`btn ${className}`} onClick={onClick} type={type}>
+      {iconPosition === 'left' && Icon && <Icon {...iconProps} />}
+      {label}
+      {iconPosition === 'right' && Icon && <Icon {...iconProps} />}
     </button>
   );
 }
