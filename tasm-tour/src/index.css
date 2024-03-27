@@ -4,5 +4,5 @@
 @tailwind utilities;
 
 .btn {
-  @apply bg-red text-white font-exo2 
+  @apply bg-red text-white font-exo2 flex items-center justify-center gap-2
 }
