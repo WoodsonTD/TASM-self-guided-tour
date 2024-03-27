@@ -51,7 +51,7 @@ const ModelView = ({ modelID, sky }) => {
   const _model = modelID ? ModelColletion[modelID].model : null;
 
   return (
-    <div style={{ height: '500px', alignSelf: 'center', display: 'flex', margin: 'auto' }}>
+    <div style={{ height: '500px', alignSelf: 'center', display: 'flex', margin: 'auto',flexDirection:'column',textAlign:'center' }}>
       <Scene
         embedded
         xr-mode-ui='enabled: false'
@@ -66,6 +66,7 @@ const ModelView = ({ modelID, sky }) => {
         {sky ? <a-sky color={sky} /> : null}
         {/* <Entity primitive="a-box" drag-rotate-component='' color='red' position='0 0.5 0' scale="1 1 1" /> */}
       </Scene>
+      {ModelColletion[modelID].credit ? <p>{ModelColletion[modelID].credit}</p> : null}
     </div>
   );
 };
