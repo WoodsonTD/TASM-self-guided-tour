@@ -1,7 +1,7 @@
 import { React, useState} from 'react';
 import logo from '../../assets/images/tasm-logo-p-500.png';
 
-export default function Header({ exhibitID='A69Z' }) {
+export default function Header({ exhibitID }) {
   const [inputValue, setInputValue] = useState(exhibitID);
 
   const handleInputChange = (event) => {
