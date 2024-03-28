@@ -1,4 +1,7 @@
 import React from 'react'
+import QRCode from 'react-qr-code';
+import { db } from '../firebase';
+import { collection, addDoc, getDoc, doc } from 'firebase/firestore';
 
 class ExhibitForm extends React.Component {
     constructor(props) {
@@ -9,7 +12,6 @@ class ExhibitForm extends React.Component {
             mediaType: 'None',
             mediaLink: '',
             audioLink: '',
-            qrLink: '',
             content: '',
             articleLink: ['']
         };
@@ -26,10 +28,26 @@ class ExhibitForm extends React.Component {
         }));
     };
 
-    handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Form submitted', this.state);
+handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+        const exhibitData = {
+            title: this.state.title,
+            id: this.state.id,
+            mediaType: this.state.mediaType,
+            mediaLink: this.state.mediaLink,
+            audioLink: this.state.audioLink,
+            content: this.state.content,
+            articleLink: this.state.articleLink,
+        };
+
+        await addDoc(collection(db, 'exhibits'), exhibitData);
+        console.log('Exhibit data saved to Firestore');
+        // Clear the form or perform any other necessary actions
+    } catch (error) {
+        console.error('Error saving exhibit data:', error);
     }
+};
 
     render() {
         const { title, id, mediaType, mediaLink, audioLink, qrLink, content, articleLink } = this.state;
@@ -94,6 +112,10 @@ class ExhibitForm extends React.Component {
                 </label>
                 <button type="submit" name='submit'>Submit</button>
             </form>
+                <div>
+                    <h3>Generated QR Code:</h3>
+                    <QRCode value={this.state.id} size={256} />
+                </div>
         </div>
         )
     }

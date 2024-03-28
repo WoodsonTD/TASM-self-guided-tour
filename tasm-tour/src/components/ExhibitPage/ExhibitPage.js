@@ -23,12 +23,12 @@ export default function ExhibitPage({ exhibitID }) {
           setError('Exhibit not found');
         }
 
-                                setLoading(false);
-                        } catch (error) {
-                                setError('Failed to fetch exhibit data' + exhibitID + 'exhibitID');
-                                setLoading(false);
-                        }
-                };
+        setLoading(false);
+      } catch (error) {
+        setError('Failed to fetch exhibit data');
+        setLoading(false);
+      }
+    };
 
     fetchData();
   }, [exhibitID]);
@@ -42,10 +42,10 @@ export default function ExhibitPage({ exhibitID }) {
   }
 
 
-        if (!exhibit) {
-                console.log('Exhibit not found this is the' + exhibitID + 'exhibitID');
-                return <div>Exhibit not found. ID: {exhibitID}</div>;
-        }
+  if (!exhibit) {
+    console.log('Exhibit not found this is the');
+    return <div>Exhibit not found. ID: {exhibitID}</div>;
+  }
 
   return (
     <div className="">
