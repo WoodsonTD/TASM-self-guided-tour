@@ -1,10 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import firebase from 'firebase/app';
-import 'firebase/analytics';
-// import 'firebase/hosting';
-// import 'firebase/auth';
-
-const { initializeApp, getAnalytics } = firebase;
+import { getAnalytics } from 'firebase/analytics';
+import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -18,14 +14,9 @@ const firebaseConfig = {
     measurementId: "G-SDPB3H33EV"
 };
 
-let app, analytics;
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
 
-try {
-    // Initialize Firebase
-    app = initializeApp(firebaseConfig);
-    analytics = getAnalytics(app);
-} catch (error) {
-    console.error('Error initializing Firebase:', error);
-}
-
-export { app, analytics };
+export { app, analytics, db };
