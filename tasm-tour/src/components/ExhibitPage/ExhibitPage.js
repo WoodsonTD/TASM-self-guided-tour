@@ -61,7 +61,7 @@ export default function ExhibitPage({ exhibitID }) {
 export function FurtherReading({ furtherReading }) {
   return (
     <div className="FurtherReading">
-      <h2 className="text-5xl text-black">Further Reading</h2>
+      <h2 className="text-5xl text-black text-center">Further Reading</h2>
       <ul>
         {furtherReading.map((item, index) => (
           <li key={index}>
