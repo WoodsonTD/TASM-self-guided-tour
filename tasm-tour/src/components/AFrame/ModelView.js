@@ -31,11 +31,11 @@ AFRAME.registerComponent('drag-rotate-component', {
   OnDocumentMouseMove: function (event) {
     if (this.ifMouseDown) {
       //Get pos from mouse or touch event
-      var x_pos = event.clientX || (event.touches ? event.touches[0].clientX : 0);
-      var y_pos = event.clientY || (event.touches ? event.touches[0].clientY : 0);
+      const x_pos = event.clientX || (event.touches ? event.touches[0].clientX : 0);
+      const y_pos = event.clientY || (event.touches ? event.touches[0].clientY : 0);
       //Get the difference between the current pos, and the old pos
-      var temp_x = x_pos - this.x_cord;
-      var temp_y = y_pos - this.y_cord;
+      const temp_x = x_pos - this.x_cord;
+      const temp_y = y_pos - this.y_cord;
       //Rotate the entity
       this.el.object3D.rotation.y += temp_x * this.data.yawSpeed;
       this.el.object3D.rotation.x += temp_y * this.data.pitchSpeed;
