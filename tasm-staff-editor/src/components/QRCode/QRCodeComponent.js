@@ -20,7 +20,13 @@ function QRCodeComponent({ value }) {
                 <QRCode value={value} size={256} />
             </div>
             {/* <button onClick={handleDownloadPDF}>Download QR Code as PDF</button> */}
-            <button onClick={handleDownloadPDF} type="submit" name='submit' className="btn rounded-r-full pr-1 pl-3 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]">Download QR Code as PDF</button>
+            <button
+                onClick={handleDownloadPDF}
+                type="button"
+                className="btn rounded-r-full pr-1 pl-3 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+            >
+                Download QR Code as PDF
+            </button>
         </div>
     );
 }

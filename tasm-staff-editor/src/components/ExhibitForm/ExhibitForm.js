@@ -18,14 +18,11 @@ function ExhibitForm(props) {
     const [articleLink, setArticleLink] = useState(['']);
     const [qrCodeValue, setQrCodeValue] = useState('');
 
-    const handleChange = (event) => {
+    const handleChange = (event, index) => {
         const { name, value } = event.target;
         switch (name) {
             case 'title':
                 setTitle(value);
-                break;
-            // case 'id':
-            //     setId(value);
                 break;
             case 'mediaType':
                 setMediaType(value);
@@ -38,6 +35,13 @@ function ExhibitForm(props) {
                 break;
             case 'content':
                 setContent(value);
+                break;
+            case 'articleLink':
+                setArticleLink((prevLinks) => {
+                    const updatedLinks = [...prevLinks];
+                    updatedLinks[index] = value;
+                    return updatedLinks;
+                });
                 break;
             default:
                 break;
@@ -84,9 +88,17 @@ function ExhibitForm(props) {
             <form className="mt-6 mx-14 justify-center rounded-lg px-6 py-10 md:mx-32 lg:mx-36" onSubmit={handleSubmit}>
                 <ExhibitTitle title={title} onChange={handleChange} />
                 {/* <ExhibitID onChange={handleChange} /> */}
-                <MediaType mediaType={mediaType} onChange={handleChange} />
+                <MediaType
+                    mediaType={mediaType}
+                    mediaLink={mediaLink}
+                    onChange={handleChange}
+                />
                 <ExhibitContent content={content} onChange={handleChange} />
-                <ReadingLinks onChange={handleChange} onAddArticleLink={handleAddArticleLink} />
+                <ReadingLinks
+                    articleLink={articleLink}
+                    onChange={handleChange}
+                    onAddArticleLink={handleAddArticleLink}
+                />
                 <button type="submit" name='submit' className="btn rounded-r-full pr-1 pl-3 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]">Submit</button>
             </form>
             <div>
