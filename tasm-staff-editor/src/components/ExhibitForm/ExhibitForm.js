@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import QRCodeComponent from '../QRCode/QRCodeComponent.js';
 import { db } from '../../firebase.js';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc } from 'firebase/firestore';
 import ExhibitTitle from '../ExhibitTitle/ExhibitTitle.js';
-// import ExhibitID from '../ExhibitID/ExhibitID.js';
 import MediaType from '../MediaType/MediaType.js';
 import ExhibitContent from '../ExhibitContent/ExhibitContent.js';
 import ReadingLinks from '../ReadingLinks/ReadingLinks.js';
 import Button from '../ButtonPanel/Button.js';
 import { CheckIcon } from '@heroicons/react/24/outline';
+
 
 function ExhibitForm(props) {
   const [title, setTitle] = useState('');
@@ -19,6 +19,7 @@ function ExhibitForm(props) {
   const [content, setContent] = useState('');
   const [articleLink, setArticleLink] = useState(['']);
   const [qrCodeValue, setQrCodeValue] = useState('');
+  const [fourDigitCode, setFourDigitCode] = useState('');
 
   const handleChange = (event, index) => {
     const { name, value } = event.target;
@@ -72,6 +73,14 @@ function ExhibitForm(props) {
       const qrCodeValue = `http://localhost:3000/exhibit/${docRef.id}`;
       setQrCodeValue(qrCodeValue);
 
+      // Generate a unique 4-digit code
+      setFourDigitCode(Math.floor(1000 + Math.random() * 9000).toString());
+      console.log('Generated 4-digit code:', fourDigitCode);
+
+      // Update the exhibit data in Firestore with the 4-digit code
+      await updateDoc(docRef, { fourDigitCode });
+
+
       // Clear the form fields
       setTitle('');
       setMediaType('None');
@@ -89,14 +98,13 @@ function ExhibitForm(props) {
       <h1 className="text-white">Exhibit Form</h1>
       <form className="mt-6 mx-14 justify-center rounded-lg px-6 py-10 md:mx-32 lg:mx-36" onSubmit={handleSubmit}>
         <ExhibitTitle title={title} onChange={handleChange} />
-        {/* <ExhibitID onChange={handleChange} /> */}
         <MediaType
           mediaType={mediaType}
           mediaLink={mediaLink}
           onChange={handleChange}
         />
         <div>
-          <QRCodeComponent value={qrCodeValue} />
+          <QRCodeComponent value={qrCodeValue} fourDigitCode={fourDigitCode} />
         </div>
         <ExhibitContent content={content} onChange={handleChange} />
         <ReadingLinks
