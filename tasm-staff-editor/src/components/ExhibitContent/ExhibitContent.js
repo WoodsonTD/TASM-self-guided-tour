@@ -4,7 +4,7 @@ export default function ExhibitContent({ content, onChange }) {
 
   return (
     <div>
-      <label htmlFor="content">Content:</label>
+      <label htmlFor="content" className="text-white">Content:</label>
       <div className="mt-2">
         <textarea
           id="content"
