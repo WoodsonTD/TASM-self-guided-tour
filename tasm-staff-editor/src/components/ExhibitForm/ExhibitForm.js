@@ -114,7 +114,7 @@ function ExhibitForm() {
         />
         <Button
           label="Submit"
-          onClick={() => console.log('Submit clicked')}
+          onClick={handleSubmit}
           icon={CheckIcon}
           iconProps={{ className: "w-7 h-7" }}
           iconPosition="left"
