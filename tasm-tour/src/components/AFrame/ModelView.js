@@ -60,11 +60,8 @@ const ModelView = ({ modelID, sky }) => {
         <a-camera position='0 0 2' rotation='0 0 0'
           wasd-controls='enabled:false' look-controls="enabled:false"
         />
-
-        {/* <Entity primitive='a-sky' color="lightGrey" /> */}
         <a-gltf-model src={_model} drag-rotate-component='' color='red' position='0 0 0' scale="1 1 1" />
         {sky ? <a-sky color={sky} /> : null}
-        {/* <Entity primitive="a-box" drag-rotate-component='' color='red' position='0 0.5 0' scale="1 1 1" /> */}
       </Scene>
       {ModelColletion[modelID].credit ? <p>{ModelColletion[modelID].credit}</p> : null}
     </div>
