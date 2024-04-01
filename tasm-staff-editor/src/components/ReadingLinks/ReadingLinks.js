@@ -7,7 +7,7 @@ export default function ReadingLinks({ articleLink = [], onChange, onAddArticleL
     <div>
       <p className='text-center text-white text-xl block mb-4'>Additional reading</p>
       {articleLink.map((link, index) => (
-        <div>
+        <div key={index}>
           <label key={index} className='block mb-1 text-white'>
             Link:
           </label>

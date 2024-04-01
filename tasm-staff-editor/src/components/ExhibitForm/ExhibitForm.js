@@ -102,6 +102,8 @@ function ExhibitForm() {
           mediaType={mediaType}
           mediaLink={mediaLink}
           onChange={handleChange}
+          // this might not be correct
+          handleImageUpload={handleImageUpload}
         />
         <div>
           <QRCodeComponent value={qrCodeValue} fourDigitCode={fourDigitCode} />
