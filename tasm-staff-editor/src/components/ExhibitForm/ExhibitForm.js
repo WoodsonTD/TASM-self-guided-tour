@@ -13,7 +13,7 @@ import { CheckIcon } from '@heroicons/react/24/outline';
 function ExhibitForm(props) {
   const [title, setTitle] = useState('');
   // const [id, setId] = useState('');
-  const [mediaType, setMediaType] = useState('None');
+  const [mediaType, setMediaType] = useState('image');
   const [mediaLink, setMediaLink] = useState('');
   const [audioLink, setAudioLink] = useState('');
   const [content, setContent] = useState('');
@@ -86,7 +86,7 @@ function ExhibitForm(props) {
 
   return (
     <div className='text-lg'>
-      <h1>Exhibit Form</h1>
+      <h1 className="text-white">Exhibit Form</h1>
       <form className="mt-6 mx-14 justify-center rounded-lg px-6 py-10 md:mx-32 lg:mx-36" onSubmit={handleSubmit}>
         <ExhibitTitle title={title} onChange={handleChange} />
         {/* <ExhibitID onChange={handleChange} /> */}
@@ -96,7 +96,6 @@ function ExhibitForm(props) {
           onChange={handleChange}
         />
         <div>
-          <h3>Generated QR Code:</h3>
           <QRCodeComponent value={qrCodeValue} />
         </div>
         <ExhibitContent content={content} onChange={handleChange} />
