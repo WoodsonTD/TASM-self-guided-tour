@@ -2,3 +2,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn {
+  @apply bg-red text-white font-exo2 flex items-center justify-center cursor-pointer
+}
+
+.speakerbtn {
+  @apply md:ml-3 ml-1 mb-1 p-2 cursor-pointer rounded-full bg-transparent hover:bg-red focus:outline-none focus:ring-2 focus:ring-darkBlue active:bg-red transition duration-300 ease-in drop-shadow-[1px_2px_3px_rgba(0,0,0,0.25)]
+}
+
+.speakerIcon {
+  @apply w-9 h-9 text-black hover:text-white transition-colors duration-300 ease-in
+}

@@ -1,12 +1,10 @@
-import firebase from 'firebase/app';
-import 'firebase/analytics';
+// src/firebase.js
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
+// import 'firebase/analytics';
 // import 'firebase/hosting';
 // import 'firebase/auth';
 
-const { initializeApp, getAnalytics } = firebase;
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: "AIzaSyC4GbeC5Wz7LtxVgdWzN7sOAdz10MjSlrI",
     authDomain: "tasm-tour.firebaseapp.com",
@@ -17,6 +15,7 @@ const firebaseConfig = {
     measurementId: "G-SDPB3H33EV"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+export { app, analytics };
