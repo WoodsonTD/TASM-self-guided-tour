@@ -10,7 +10,7 @@ import Button from '../ButtonPanel/Button.js';
 import { CheckIcon } from '@heroicons/react/24/outline';
 
 
-function ExhibitForm(props) {
+function ExhibitForm() {
   const [title, setTitle] = useState('');
   // const [id, setId] = useState('');
   const [mediaType, setMediaType] = useState('image');
@@ -102,6 +102,8 @@ function ExhibitForm(props) {
           mediaType={mediaType}
           mediaLink={mediaLink}
           onChange={handleChange}
+          // this might not be correct
+          handleImageUpload={handleImageUpload}
         />
         <div>
           <QRCodeComponent value={qrCodeValue} fourDigitCode={fourDigitCode} />
