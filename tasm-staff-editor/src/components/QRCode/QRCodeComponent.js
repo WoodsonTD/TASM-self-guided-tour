@@ -16,11 +16,11 @@ function QRCodeComponent({ value }) {
   };
 
   return (
-    <div>
-      <div ref={qrCodeRef}>
-        <QRCode value={value} className="w-28 h-28" />
+    <div className="flex flex-col items-center">
+      <h3 className="text-white">Generated QR Code:</h3>
+      <div ref={qrCodeRef} className="mb-4">
+        <QRCode value={value} size={128} />
       </div>
-      {/* <button onClick={handleDownloadPDF}>Download QR Code as PDF</button> */}
       <Button
         label="Download as PDF"
         onClick={handleDownloadPDF}
