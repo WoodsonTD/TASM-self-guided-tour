@@ -32,7 +32,7 @@ export default function MediaType({ mediaType, mediaLink, onChange }) {
       {mediaType === 'image' && (
         <div className="flex flex-col mb-4">
           <label className="mr-2 text-white">Upload Image:</label>
-          <input type="file" name="mediaLink" accept='image/*' value={mediaLink} onChange={handleImageUpload} className="flex-1" />
+          <input type="file" name="mediaLink" accept='image/*' onChange={handleImageUpload} className="flex-1" />
         </div>
       )}
       {mediaType === 'video' && (
