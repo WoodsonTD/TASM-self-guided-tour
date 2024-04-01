@@ -10,7 +10,7 @@ import Button from '../ButtonPanel/Button.js';
 import { CheckIcon } from '@heroicons/react/24/outline';
 
 
-function ExhibitForm(props) {
+function ExhibitForm() {
   const [title, setTitle] = useState('');
   // const [id, setId] = useState('');
   const [mediaType, setMediaType] = useState('image');
