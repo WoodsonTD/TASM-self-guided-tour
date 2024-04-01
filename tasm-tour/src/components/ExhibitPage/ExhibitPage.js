@@ -10,6 +10,8 @@ export default function ExhibitPage({ exhibitID }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const errorStyle = 'md:w-2/3 m-auto text-center';
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,7 +27,7 @@ export default function ExhibitPage({ exhibitID }) {
 
         setLoading(false);
       } catch (error) {
-        setError('Failed to fetch exhibit data');
+        setError("Failed to fetch exhibit data.\n" +error);
         setLoading(false);
       }
     };
@@ -34,17 +36,18 @@ export default function ExhibitPage({ exhibitID }) {
   }, [exhibitID]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className={errorStyle}>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className={errorStyle} style={{whiteSpace:"pre-wrap"}}> Error: {error}</div>;
   }
 
 
   if (!exhibit) {
-    console.log('Exhibit not found this is the');
-    return <div>Exhibit not found. ID: {exhibitID}</div>;
+    return (
+    <div className={errorStyle}>Exhibit not found. ID: {exhibitID}</div>
+    );
   }
 
   return (
@@ -61,7 +64,7 @@ export default function ExhibitPage({ exhibitID }) {
 export function FurtherReading({ furtherReading }) {
   return (
     <div className="FurtherReading">
-      <h2 className="text-5xl text-black">Further Reading</h2>
+      <h2 className="text-5xl text-black text-center">Further Reading</h2>
       <ul>
         {furtherReading.map((item, index) => (
           <li key={index}>
