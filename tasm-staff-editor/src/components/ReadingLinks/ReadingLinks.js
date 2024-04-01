@@ -24,7 +24,7 @@ export default function ReadingLinks({ articleLink = [], onChange, onAddArticleL
       ))}
       <Button
         label="Add Link"
-        onClick={() => console.log('Add Link clicked')}
+        onClick={onAddArticleLink}
         icon={PlusIcon}
         iconProps={{ className: "w-7 h-7" }}
         iconPosition="left"
