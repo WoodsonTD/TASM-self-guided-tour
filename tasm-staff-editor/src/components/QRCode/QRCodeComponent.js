@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas';
 import QRCode from 'react-qr-code';
 import Button from '../ButtonPanel/Button.js';
 
-function QRCodeComponent({ value }) {
+function QRCodeComponent({ value, fourDigitCode }) {
   const qrCodeRef = useRef(null);
 
   const handleDownloadPDF = async () => {
@@ -19,8 +19,8 @@ function QRCodeComponent({ value }) {
     <div>
       <div ref={qrCodeRef}>
         <QRCode value={value} className="w-28 h-28" />
+        <p>4-Digit Code: { fourDigitCode }</p>
       </div>
-      {/* <button onClick={handleDownloadPDF}>Download QR Code as PDF</button> */}
       <Button
         label="Download as PDF"
         onClick={handleDownloadPDF}
