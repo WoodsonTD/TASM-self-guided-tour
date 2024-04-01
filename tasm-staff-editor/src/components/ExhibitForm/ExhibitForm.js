@@ -70,7 +70,7 @@ function ExhibitForm() {
       console.log('Exhibit data saved to Firestore');
 
       // Generate the URL or identifier for the QR code
-      const qrCodeValue = `http://localhost:3000/exhibit/${docRef.id}`;
+      const qrCodeValue = `http://localhost:3000/exhibits/${docRef.id}`;
       setQrCodeValue(qrCodeValue);
 
       // Generate a unique 4-digit code
