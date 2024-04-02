@@ -21,12 +21,12 @@ export default function ExhibitPage({ exhibitID }) {
       setExhibit(null);
       try {
         const db = getFirestore(app);
-        const q = query(collection(db, 'exhibits'), where('fourDigitCode', '==', exhibitID));
-        const exhibitCol = await getDocs(q);
-        if (!exhibitCol.empty) {
-          const exhibitSnapshot = exhibitCol.docs[0];
+        const queryResults = query(collection(db, 'exhibits'), where('fourDigitCode', '==', exhibitID));
+        const exhibitResults = await getDocs(queryResults);
+        if (!exhibitResults.empty) {
+          const exhibitSnapshot = exhibitResults.docs[0];
           setExhibit(exhibitSnapshot.data());
-          if (exhibitCol.size > 1) {
+          if (exhibitResults.size > 1) {
             console.warn("Multiple exhibits found with the same ID: " + exhibitID);
           }
         } else {
@@ -79,7 +79,7 @@ export default function ExhibitPage({ exhibitID }) {
       <ExhibitTitle title={exhibit.title} />
       {media}
       <p>{exhibit.content}</p>
-      {/* <FurtherReading furtherReading={exhibit.furtherReading} /> */}
+      {exhibit.furtherReading ? <FurtherReading furtherReading={exhibit.furtherReading} /> : null}
       <ButtonPanel />
     </div>
   );

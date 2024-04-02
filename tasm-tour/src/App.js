@@ -5,8 +5,8 @@ import './App.css';
 
 
 function App() {
-  const qprams = new URLSearchParams(window.location.search);
-  const [exhibitID, setExhibitID] = useState(qprams.get('exhibitID') || 'test');
+  const searchParams = new URLSearchParams(window.location.search);
+  const [exhibitID, setExhibitID] = useState(searchParams.get('exhibitID') || 'test');
 
   console.log(exhibitID);
   return (
