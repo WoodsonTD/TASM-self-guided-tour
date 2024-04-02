@@ -1,6 +1,7 @@
 import { React, useState} from 'react';
 import logo from '../../assets/images/tasm-logo-p-500.png';
 import {ChevronRightIcon} from '@heroicons/react/24/outline';
+import Button from '../ButtonPanel/Button';
 
 export default function Header({ exhibitID, setExhibitID }) {
   const [inputValue, setInputValue] = useState(exhibitID);
@@ -22,14 +23,18 @@ export default function Header({ exhibitID, setExhibitID }) {
           type='text'
           value={inputValue}
           onChange={handleInputChange}
-          className="bg-gray text-black w-24 py-1 px-2 rounded-l-full text-center text-2xl font-bold drop-shadow-[-2px_3px_4px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-blue transition-all"
+          onSubmit={console.log(inputValue)}
+          className="bg-gray text-black w-24 py-1 px-2 rounded-l-md text-center text-2xl font-bold drop-shadow-[-2px_3px_4px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-blue transition-all"
         />
-        <button 
-          className="btn rounded-r-full pr-1 pl-3 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+        <Button 
+          className="btn rounded-r-md pr-1 pl-3 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-blue transition-all"
           onClick={() => setExhibitID(inputValue)}
+          icon={ChevronRightIcon}
+          iconProps={{ className: "w-7 h-7" }}
+          iconPosition="right"
         >
-          {ChevronRightIcon && <ChevronRightIcon className="w-7 h-7" />}
-        </button>
+          
+        </Button>
         </div>
       </div>
 		</div>

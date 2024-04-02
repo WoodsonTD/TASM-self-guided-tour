@@ -16,15 +16,19 @@ export default function ExhibitPage({ exhibitID }) {
 
   useEffect(() => {
     const fetchData = async () => {
+      setError(null);
+      setLoading(true);
+      setExhibit(null);
       try {
         const db = getFirestore(app);
         const q = query( collection(db, 'exhibits'), where('fourDigitCode','==', exhibitID));
-        /*const exhibitRef = doc(db, 'exhibits', exhibitID);
-        const exhibitSnapshot = await getDoc(exhibitRef);*/
         const exhibitCol = await getDocs(q);
         if (!exhibitCol.empty) {
           const exhibitSnapshot = exhibitCol.docs[0];
           setExhibit(exhibitSnapshot.data());
+          if(exhibitCol.size > 1) {
+            console.warn("Multiple exhibits found with the same ID: " + exhibitID);
+          }
         } else {
           setError('Exhibit not found.\n' + exhibitID);
         }
