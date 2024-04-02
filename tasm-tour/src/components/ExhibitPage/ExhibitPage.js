@@ -77,7 +77,11 @@ export default function ExhibitPage({ exhibitID }) {
     <div className="">
       <ExhibitTitle title={exhibit.title} />
       {media}
-      <p>{exhibit.content}</p>
+      <p
+        className='text-black text-center md:w-2/3 m-auto p-4'
+      >
+        {exhibit.content}
+      </p>
       {exhibit.furtherReading ? <FurtherReading furtherReading={exhibit.furtherReading} /> : null}
       <ButtonPanel />
     </div>
