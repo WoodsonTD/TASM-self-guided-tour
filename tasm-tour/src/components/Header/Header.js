@@ -25,6 +25,11 @@ export default function Header({ exhibitID, setExhibitID }) {
             onChange={handleInputChange}
             onSubmit={console.log(inputValue)}
             className="bg-gray text-black w-24 py-1 px-2 rounded-l-md text-center text-2xl font-bold drop-shadow-[-2px_3px_4px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-blue transition-all"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                setExhibitID(inputValue);
+              }
+            }}
           />
           <Button
             className="btn rounded-r-md pr-1 pl-3 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-blue transition-all"
