@@ -21,12 +21,12 @@ export default function ExhibitPage({ exhibitID }) {
       setExhibit(null);
       try {
         const db = getFirestore(app);
-        const q = query( collection(db, 'exhibits'), where('fourDigitCode','==', exhibitID));
+        const q = query(collection(db, 'exhibits'), where('fourDigitCode', '==', exhibitID));
         const exhibitCol = await getDocs(q);
         if (!exhibitCol.empty) {
           const exhibitSnapshot = exhibitCol.docs[0];
           setExhibit(exhibitSnapshot.data());
-          if(exhibitCol.size > 1) {
+          if (exhibitCol.size > 1) {
             console.warn("Multiple exhibits found with the same ID: " + exhibitID);
           }
         } else {
