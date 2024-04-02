@@ -13,7 +13,8 @@ export default function VideoView({ videoPath, ariaLabel, caption, displayType =
         style={{height:'500px'}}
         allowfullscreen="true"
         src={videoPath} 
-        aria-label={alt} />
+        aria-label={alt} 
+        title={alt}/>
       {caption ? <p style={{ textAlign: 'center' }}>{caption}</p> : null}
     </div>
   );
