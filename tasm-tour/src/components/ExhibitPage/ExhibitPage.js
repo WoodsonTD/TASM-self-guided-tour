@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getFirestore, query, where, getDocs, collection } from 'firebase/firestore';
-import { app } from '../../firebase';
+import { query, where, getDocs, collection } from 'firebase/firestore';
+import { db } from '../../firebase';
 import ExhibitTitle from '../ExhibitTitle/ExhibitTitle';
 import ModelView from '../AFrame/ModelView';
 import VideoView from '../VideoView/VideoView';
@@ -20,7 +20,6 @@ export default function ExhibitPage({ exhibitID }) {
       setLoading(true);
       setExhibit(null);
       try {
-        const db = getFirestore(app);
         const queryResults = query(collection(db, 'exhibits'), where('fourDigitCode', '==', exhibitID));
         const exhibitResults = await getDocs(queryResults);
         if (!exhibitResults.empty) {
