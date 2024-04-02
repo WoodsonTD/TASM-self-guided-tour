@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="bg-gray min-h-screen ld-h-screen bg-h-screen font-exo2">
       <Header exhibitID={exhibitID} setExhibitID={setExhibitID} />
-      <ExhibitPage exhibitID={exhibitID} />
+      <ExhibitPage exhibitID={exhibitID} setExhibitID={setExhibitID} />
     </div>
   );
 }
