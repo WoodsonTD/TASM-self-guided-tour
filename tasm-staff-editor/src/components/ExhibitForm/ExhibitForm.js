@@ -17,42 +17,42 @@ function ExhibitForm() {
   const [mediaLink, setMediaLink] = useState('');
   const [audioLink, setAudioLink] = useState('');
   const [content, setContent] = useState('');
-  const [articleLink, setArticleLink] = useState(['']);
+  const [articleLink, setArticleLink] = useState([{ title: '', link: '' }]);
   const [qrCodeValue, setQrCodeValue] = useState('');
   const [fourDigitCode, setFourDigitCode] = useState('');
 
-  const handleChange = (event, index) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    switch (name) {
-      case 'title':
-        setTitle(value);
-        break;
-      case 'mediaType':
-        setMediaType(value);
-        break;
-      case 'mediaLink':
-        setMediaLink(value);
-        break;
-      case 'audioLink':
-        setAudioLink(value);
-        break;
-      case 'content':
-        setContent(value);
-        break;
-      case 'articleLink':
-        setArticleLink((prevLinks) => {
-          const updatedLinks = [...prevLinks];
-          updatedLinks[index] = value;
-          return updatedLinks;
-        });
-        break;
-      default:
-        break;
+
+    if (name === 'articleLink') {
+      // Directly use the value from the event since it's already the updated array
+      setArticleLink(value);
+    } else {
+      // Handle other inputs based on their names
+      switch (name) {
+        case 'title':
+          setTitle(value);
+          break;
+        case 'mediaType':
+          setMediaType(value);
+          break;
+        case 'mediaLink':
+          setMediaLink(value);
+          break;
+        case 'audioLink':
+          setAudioLink(value);
+          break;
+        case 'content':
+          setContent(value);
+          break;
+        default:
+          break;
+      }
     }
   };
 
   const handleAddArticleLink = () => {
-    setArticleLink((prevState) => [...prevState, '']);
+    setArticleLink([...articleLink, { title: '', link: '' }]);
   };
 
   const handleSubmit = async (event) => {
