@@ -75,7 +75,7 @@ export default function ExhibitPage({ exhibitID }) {
   }
   return (
     <div className="">
-      <ExhibitTitle title={exhibit.title} />
+      <ExhibitTitle title={exhibit.title} bodyText={exhibit.content} />
       {media}
       <p
         className='text-black text-center md:w-2/3 m-auto p-4'
