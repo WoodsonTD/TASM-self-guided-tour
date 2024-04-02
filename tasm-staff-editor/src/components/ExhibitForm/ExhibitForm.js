@@ -70,7 +70,7 @@ function ExhibitForm() {
       console.log('Exhibit data saved to Firestore');
 
       // Generate the URL or identifier for the QR code
-      const qrCodeValue = `http://localhost:3000/exhibit/${docRef.id}`;
+      const qrCodeValue = `http://localhost:3000/exhibits/${docRef.id}`;
       setQrCodeValue(qrCodeValue);
 
       // Generate a unique 4-digit code
@@ -102,8 +102,6 @@ function ExhibitForm() {
           mediaType={mediaType}
           mediaLink={mediaLink}
           onChange={handleChange}
-          // this might not be correct
-          handleImageUpload={handleImageUpload}
         />
         <div>
           <QRCodeComponent value={qrCodeValue} fourDigitCode={fourDigitCode} />
@@ -116,7 +114,7 @@ function ExhibitForm() {
         />
         <Button
           label="Submit"
-          onClick={() => console.log('Submit clicked')}
+          onClick={handleSubmit}
           icon={CheckIcon}
           iconProps={{ className: "w-7 h-7" }}
           iconPosition="left"
