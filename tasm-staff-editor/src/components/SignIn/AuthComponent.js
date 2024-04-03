@@ -1,5 +1,5 @@
 // src/components/AuthComponent.js
-
+import { useEffect } from 'react';
 import { auth } from "./src/firebase";
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
@@ -8,7 +8,7 @@ const AuthComponent = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // User signed in successfully
-                const user = userCredential.user;
+                const {user} = userCredential;
                 console.log("User signed in:", user);
                 // Redirect to the dashboard or perform other actions
             })
@@ -34,7 +34,7 @@ const AuthComponent = () => {
             });
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 // User is signed in
