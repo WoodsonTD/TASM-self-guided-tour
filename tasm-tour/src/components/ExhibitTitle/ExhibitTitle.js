@@ -1,13 +1,12 @@
-import React from 'react';
 import { SpeakerWaveIcon } from '@heroicons/react/24/solid';
 import Button from '../ButtonPanel/Button';
 
-export default function ExhibitTitle({ title }) {
+export default function ExhibitTitle({ title, bodyText }) {
   const handleTextToSpeech = () => {
     const { speechSynthesis } = window;
-    const speech = new SpeechSynthesisUtterance(title);
+    const speech = new SpeechSynthesisUtterance(title + " . . . " + bodyText);
     speechSynthesis.speak(speech);
-  }
+  };
 
   return (
     <div className="shadow-lg">
