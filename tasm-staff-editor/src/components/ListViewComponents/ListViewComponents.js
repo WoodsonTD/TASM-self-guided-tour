@@ -3,7 +3,7 @@ import { collection, getDocs } from 'firebase/firestore'
 import { useState, useEffect } from 'react';
 import ListViewItem from './ListViewItem.js';
 
-export default function ListViewComponents({ entry, setEntry }) {
+export default function ListViewComponent({ entry, setEntry }) {
 
   const [exhibitData, setExhibitData] = useState([]);
   // let exhibitData = [];
@@ -36,7 +36,7 @@ export default function ListViewComponents({ entry, setEntry }) {
           </tr>
         </thead>
         <tbody>
-          {exhibitData.map((exhibit) => <ListViewItem exhibit={exhibit} />)}
+          {exhibitData.map((exhibit) => <ListViewItem exhibit={exhibit} setEntry={setEntry} />)}
         </tbody>
       </table>
     </div>
