@@ -20,7 +20,7 @@ function QRCodeComponent({ value, fourDigitCode }) {
       <h3 className="text-white">Generated QR Code:</h3>
       <div ref={qrCodeRef} className="mb-4">
         <QRCode value={value} size={128} />
-        <p>4-Digit Code: { fourDigitCode }</p>
+        <p className="text-white">Exhibit ID: { fourDigitCode }</p>
       </div>
       <Button
         label="Download as PDF"

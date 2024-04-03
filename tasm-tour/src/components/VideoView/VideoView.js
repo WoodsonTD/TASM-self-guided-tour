@@ -9,11 +9,12 @@ export default function VideoView({ videoPath, ariaLabel, caption, displayType =
   return (
     <div>
       <iframe
-        className={display + " md:w-2/3  m-auto"} 
-        style={{height:'500px'}}
+        className={display + " md:w-2/3  m-auto"}
+        style={{ height: '500px' }}
         allowfullscreen="true"
-        src={videoPath} 
-        aria-label={alt} />
+        src={videoPath}
+        aria-label={alt}
+        title={alt} />
       {caption ? <p style={{ textAlign: 'center' }}>{caption}</p> : null}
     </div>
   );

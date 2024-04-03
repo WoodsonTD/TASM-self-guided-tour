@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import QRCodeComponent from '../QRCode/QRCodeComponent.js';
+import QRCodeComponent from './QRCodeComponent.js';
 import { db } from '../../firebase.js';
 import { collection, addDoc, updateDoc } from 'firebase/firestore';
-import ExhibitTitle from '../ExhibitTitle/ExhibitTitle.js';
-import MediaType from '../MediaType/MediaType.js';
-import ExhibitContent from '../ExhibitContent/ExhibitContent.js';
-import ReadingLinks from '../ReadingLinks/ReadingLinks.js';
+import ExhibitTitle from './ExhibitTitle.js';
+import MediaType from './MediaType.js';
+import ExhibitContent from './ExhibitContent.js';
+import ReadingLinks from './ReadingLinks.js';
 import Button from '../ButtonPanel/Button.js';
 import { CheckIcon } from '@heroicons/react/24/outline';
 
@@ -17,42 +17,42 @@ function ExhibitForm() {
   const [mediaLink, setMediaLink] = useState('');
   const [audioLink, setAudioLink] = useState('');
   const [content, setContent] = useState('');
-  const [articleLink, setArticleLink] = useState(['']);
+  const [articleLink, setArticleLink] = useState([{ title: '', link: '' }]);
   const [qrCodeValue, setQrCodeValue] = useState('');
   const [fourDigitCode, setFourDigitCode] = useState('');
 
-  const handleChange = (event, index) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    switch (name) {
-      case 'title':
-        setTitle(value);
-        break;
-      case 'mediaType':
-        setMediaType(value);
-        break;
-      case 'mediaLink':
-        setMediaLink(value);
-        break;
-      case 'audioLink':
-        setAudioLink(value);
-        break;
-      case 'content':
-        setContent(value);
-        break;
-      case 'articleLink':
-        setArticleLink((prevLinks) => {
-          const updatedLinks = [...prevLinks];
-          updatedLinks[index] = value;
-          return updatedLinks;
-        });
-        break;
-      default:
-        break;
+
+    if (name === 'articleLink') {
+      // Directly use the value from the event since it's already the updated array
+      setArticleLink(value);
+    } else {
+      // Handle other inputs based on their names
+      switch (name) {
+        case 'title':
+          setTitle(value);
+          break;
+        case 'mediaType':
+          setMediaType(value);
+          break;
+        case 'mediaLink':
+          setMediaLink(value);
+          break;
+        case 'audioLink':
+          setAudioLink(value);
+          break;
+        case 'content':
+          setContent(value);
+          break;
+        default:
+          break;
+      }
     }
   };
 
   const handleAddArticleLink = () => {
-    setArticleLink((prevState) => [...prevState, '']);
+    setArticleLink([...articleLink, { title: '', link: '' }]);
   };
 
   const handleSubmit = async (event) => {
@@ -70,7 +70,7 @@ function ExhibitForm() {
       console.log('Exhibit data saved to Firestore');
 
       // Generate the URL or identifier for the QR code
-      const qrCodeValue = `http://localhost:3000/exhibit/${docRef.id}`;
+      const qrCodeValue = `http://localhost:3000/exhibits/${docRef.id}`;
       setQrCodeValue(qrCodeValue);
 
       // Generate a unique 4-digit code
@@ -94,16 +94,16 @@ function ExhibitForm() {
   };
 
   return (
-    <div className='text-lg'>
-      <h1 className="text-white">Exhibit Form</h1>
-      <form className="mt-6 mx-14 justify-center rounded-lg px-6 py-10 md:mx-32 lg:mx-36" onSubmit={handleSubmit}>
+    <div className='flex flex-col items-center justify-center text-lg'>
+      <h1 className="text-2xl text-white">Exhibit Form</h1>
+      <form className="w-full max-w-4xl mx-4 md:mx-8 lg:mx-12 xl:mx-16 px-6 py-10" onSubmit={handleSubmit}>
         <ExhibitTitle title={title} onChange={handleChange} />
-        <MediaType
-          mediaType={mediaType}
-          mediaLink={mediaLink}
-          onChange={handleChange}
-        />
-        <div>
+        <div className="flex flex-col md:flex-row justify-between items-center md:space-x-4 mb-4">
+          <MediaType
+            mediaType={mediaType}
+            mediaLink={mediaLink}
+            onChange={handleChange}
+          />
           <QRCodeComponent value={qrCodeValue} fourDigitCode={fourDigitCode} />
         </div>
         <ExhibitContent content={content} onChange={handleChange} />
@@ -112,14 +112,16 @@ function ExhibitForm() {
           onChange={handleChange}
           onAddArticleLink={handleAddArticleLink}
         />
-        <Button
-          label="Submit"
-          onClick={handleSubmit}
-          icon={CheckIcon}
-          iconProps={{ className: "w-7 h-7" }}
-          iconPosition="left"
-          className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
-        />
+        <div className="flex justify-center mt-6">
+          <Button
+            label="Submit"
+            onClick={handleSubmit}
+            icon={CheckIcon}
+            iconProps={{ className: "w-7 h-7" }}
+            iconPosition="left"
+            className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+          />
+        </div>
       </form>
     </div>
   );
