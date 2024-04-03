@@ -13,7 +13,7 @@ function App() {
   };
 
   return (
-    <div className="App bg-TASM-bg h-screen w-screen bg-cover bg-left-bottom bg-no-repeat font-exo2">
+    <div className="App bg-TASM-bg min-h-screen min-w-screen bg-cover bg-left-bottom bg-no-repeat font-exo2">
       <Nav />
       {isLoggedIn ? (
         <ExhibitForm />
