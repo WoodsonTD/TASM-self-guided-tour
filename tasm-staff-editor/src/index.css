@@ -6,3 +6,7 @@
 .btn {
     @apply bg-red text-white font-exo2 flex items-center justify-center cursor-pointer
   }
+
+.nav {
+  @apply bg-darkRed text-white py-2 px-4 inline-block rounded-br-lg
+}
