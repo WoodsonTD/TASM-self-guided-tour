@@ -4,7 +4,7 @@ import Button from '../ButtonPanel/Button';
 export default function ExhibitTitle({ title, bodyText }) {
   const handleTextToSpeech = () => {
     const { speechSynthesis } = window;
-    const speech = new SpeechSynthesisUtterance(title + ". . ." + bodyText);
+    const speech = new SpeechSynthesisUtterance(title + " . . . " + bodyText);
     speechSynthesis.speak(speech);
   };
 
