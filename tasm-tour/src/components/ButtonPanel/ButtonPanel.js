@@ -1,7 +1,7 @@
 import Button from './Button';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
-export default function ButtonPanel({setExhibitID, nextExhibit="", prevExhibit=""}) {
+export default function ButtonPanel({ setExhibitID, nextExhibit = "", prevExhibit = "" }) {
   return (
     <div className="flex justify-around p-4">
       <Button
@@ -14,7 +14,7 @@ export default function ButtonPanel({setExhibitID, nextExhibit="", prevExhibit="
       />
       <Button
         label="Next"
-        onClick={() => setExhibitID(nextExhibit||'test')}
+        onClick={() => setExhibitID(nextExhibit || 'test')}
         icon={ChevronRightIcon}
         iconProps={{ className: "w-7 h-7" }}
         iconPosition="right"

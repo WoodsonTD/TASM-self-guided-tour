@@ -83,7 +83,7 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
         {exhibit.content}
       </p>
       {exhibit.furtherReading ? <FurtherReading furtherReading={exhibit.furtherReading} /> : null}
-      <ButtonPanel setExhibitID={setExhibitID}/>
+      <ButtonPanel setExhibitID={setExhibitID} />
     </div>
   );
 }
