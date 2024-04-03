@@ -19,7 +19,7 @@ function ExhibitForm() {
   const [content, setContent] = useState('');
   const [articleLink, setArticleLink] = useState([{ title: '', link: '' }]);
   const [qrCodeValue, setQrCodeValue] = useState('');
-  const [exhibitID, setexhibitID] = useState('');
+  const [exhibitID, setExhibitID] = useState('');
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -74,7 +74,7 @@ function ExhibitForm() {
       setQrCodeValue(qrCodeValue);
 
       // Generate a unique 4-digit code
-      setexhibitID(Math.floor(1000 + Math.random() * 9000).toString());
+      setExhibitID(Math.floor(1000 + Math.random() * 9000).toString());
       console.log('Generated 4-digit code:', exhibitID);
 
       // Update the exhibit data in Firestore with the 4-digit code
