@@ -9,9 +9,9 @@ function App() {
   const [exhibitID, setExhibitID] = useState(searchParams.get('exhibitID') || 'test');
 
   return (
-    <div className="bg-gray ld-h-screen bg-h-screen font-exo2">
+    <div className="bg-gray min-h-screen ld-h-screen bg-h-screen font-exo2">
       <Header exhibitID={exhibitID} setExhibitID={setExhibitID} />
-      <ExhibitPage exhibitID={exhibitID} />
+      <ExhibitPage exhibitID={exhibitID} setExhibitID={setExhibitID} />
     </div>
   );
 }

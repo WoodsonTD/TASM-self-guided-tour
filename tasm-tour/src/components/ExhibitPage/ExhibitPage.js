@@ -7,7 +7,7 @@ import VideoView from '../VideoView/VideoView';
 import ImageView from '../ImageView/ImageView';
 import ButtonPanel from '../ButtonPanel/ButtonPanel';
 
-export default function ExhibitPage({ exhibitID }) {
+export default function ExhibitPage({ exhibitID, setExhibitID }) {
   const [exhibit, setExhibit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -75,7 +75,7 @@ export default function ExhibitPage({ exhibitID }) {
   }
   return (
     <div className="">
-      <ExhibitTitle title={exhibit.title} />
+      <ExhibitTitle title={exhibit.title} bodyText={exhibit.content} />
       {media}
       <p
         className='text-black text-center md:w-2/3 m-auto p-4'
@@ -83,7 +83,7 @@ export default function ExhibitPage({ exhibitID }) {
         {exhibit.content}
       </p>
       {exhibit.furtherReading ? <FurtherReading furtherReading={exhibit.furtherReading} /> : null}
-      <ButtonPanel />
+      <ButtonPanel setExhibitID={setExhibitID} nextExhibit={exhibit.next} prevExhibit={exhibit.prev} />
     </div>
   );
 }
