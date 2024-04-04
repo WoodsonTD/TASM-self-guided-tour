@@ -18,7 +18,7 @@ export default function MediaType({ mediaType, mediaLink, onChange }) {
   };
 
   return (
-    <div className="flex flex-col space-y-4 mb-4">
+    <div className="flex flex-col space-y-12">
       <div className="flex flex-col">
         <label htmlFor="media-type" className="mr-2 text-white">
           Media Type:
@@ -28,7 +28,7 @@ export default function MediaType({ mediaType, mediaLink, onChange }) {
           id="media-type"
           value={mediaType}
           onChange={onChange}
-          className='text-darkBlue rounded-md mt-1 border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red'
+          className="dropdown"
         >
           <option value='image'>Image</option>
           <option value='video'>Video</option>
@@ -43,7 +43,7 @@ export default function MediaType({ mediaType, mediaLink, onChange }) {
             name="mediaLink"
             accept='image/*'
             onChange={handleImageUpload}
-            className="mt-1 text-white"
+            className="file-btn mt-1 text-white/80 cursor-pointer bg-darkBlue rounded-full"
           />
         </div>
       )}
@@ -53,9 +53,10 @@ export default function MediaType({ mediaType, mediaLink, onChange }) {
           <input
             type="text"
             name="mediaLink"
+            placeholder="Video Link"
             value={mediaLink}
             onChange={onChange}
-            className="mt-1 rounded-md"
+            className="mt-1 input placeholder:text-gray-400"
           />
         </div>
       )}
