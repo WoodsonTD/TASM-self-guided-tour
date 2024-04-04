@@ -9,14 +9,14 @@ export default function ListViewItem({ exhibit, setEntry }) {
     if (confirmDelete) {
       // Perform the delete operation here
       // Still needs to be added
-      setEntry(exhibit.id);
+      console.warn("Delete operation not yet implemented!");
     }
   };
 
   return (
     <tr key={exhibit.id}>
       <td>{exhibit.data().title}</td>
-      <td>{exhibit.data().fourDigitCode}</td>
+      <td>{exhibit.data().exhibitID}</td>
       <td>
         <Button
           label="EDIT"

@@ -2,6 +2,13 @@ import React from 'react'
 
 function Nav({selected, setSelected}) {
 
+  const handleBack = () => {
+    const confirmDelete = window.confirm("Are you sure you want to go back? Any unsaved changes will be lost.");
+    if (confirmDelete) {
+      setSelected(null);
+    }
+  }
+
   return (
     <div>
       <span className="nav">
@@ -9,7 +16,7 @@ function Nav({selected, setSelected}) {
       </span>
       {selected ?
         <span className="nav">
-          <button onClick={() => setSelected(null)}>Back</button>
+          <button onClick={handleBack}>Back</button>
         </span>
         : null
       }
