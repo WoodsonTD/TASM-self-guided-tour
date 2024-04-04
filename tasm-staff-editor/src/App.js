@@ -11,7 +11,8 @@ function App() {
     <div className="App bg-TASM-bg min-h-screen min-w-screen bg-cover bg-left-bottom bg-no-repeat font-exo2">
       <Nav />
       {entry ?
-        <ExhibitForm />
+        <ExhibitForm entry={entry}
+          setEntry={setEntry} />
         :
         <ListViewComponents entry={entry}
           setEntry={setEntry} />}
