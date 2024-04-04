@@ -28,7 +28,7 @@ export default function ListViewComponent({ entry, setEntry }) {
             <th>Exhibit Name</th>
             <th>Exhibit ID</th>
             <th>EDIT</th>
-            <th>HIDE</th>
+            {/* <th>HIDE</th> */}
             <th>ORDER</th>
             <th>Move Up</th>
             <th>Move Down</th>

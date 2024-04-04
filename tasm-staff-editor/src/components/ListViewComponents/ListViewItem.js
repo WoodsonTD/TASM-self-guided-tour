@@ -25,7 +25,7 @@ export default function ListViewItem({ exhibit, setEntry }) {
           className="btn rounded-md py-0.5 px-3 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
         />
       </td>
-      <td>HIDE</td>
+      {/* <td>HIDE</td> */}
       <td>ORDER</td>
       <td>Move Up</td>
       <td>Move Down</td>
