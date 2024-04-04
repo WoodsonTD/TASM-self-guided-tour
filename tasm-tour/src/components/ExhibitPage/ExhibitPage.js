@@ -20,7 +20,7 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
       setLoading(true);
       setExhibit(null);
       try {
-        const queryResults = query(collection(db, 'exhibits'), where('fourDigitCode', '==', exhibitID));
+        const queryResults = query(collection(db, 'exhibits'), where('exhibitID', '==', exhibitID));
         const exhibitResults = await getDocs(queryResults);
         if (!exhibitResults.empty) {
           const exhibitSnapshot = exhibitResults.docs[0];
