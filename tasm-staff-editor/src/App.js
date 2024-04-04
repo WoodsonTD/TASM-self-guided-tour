@@ -9,7 +9,7 @@ function App() {
   const [entry, setEntry] = useState(null);
   return (
     <div className="App bg-TASM-bg min-h-screen min-w-screen bg-cover bg-left-bottom bg-no-repeat font-exo2">
-      <Nav />
+      <Nav selected={entry} setSelected={setEntry}/>
       {entry ?
         <ExhibitForm />
         :
