@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import QRCodeComponent from './QRCodeComponent.js';
 import { db } from '../../firebase.js';
-import { collection, addDoc, updateDoc, getDoc, doc } from 'firebase/firestore';
+import { updateDoc, getDoc, doc } from 'firebase/firestore';
 import ExhibitTitle from './ExhibitTitle.js';
 import MediaType from './MediaType.js';
 import ExhibitContent from './ExhibitContent.js';
@@ -10,7 +10,7 @@ import Button from '../ButtonPanel/Button.js';
 import { CheckIcon } from '@heroicons/react/24/outline';
 
 
-function ExhibitForm({ entry, setEntry}) {
+function ExhibitForm({ entry, setEntry }) {
   const [title, setTitle] = useState('');
   // const [id, setId] = useState('');
   const [mediaType, setMediaType] = useState('image');
@@ -28,27 +28,27 @@ function ExhibitForm({ entry, setEntry}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-    const docRef = doc(db, 'exhibits', entry);
-    const docSnap = (await getDoc(docRef)).data();
-    setTitle(docSnap.title);
-    setMediaType(docSnap.mediaType);
-    setMediaLink(docSnap.mediaLink);
-    setAudioLink(docSnap.audioLink);
-    setContent(docSnap.content);
-    setArticleLink(docSnap.articleLink);
-    setExhibitID(docSnap.exhibitID || // Generate a unique 4-digit code
-      (Math.floor(1000 + Math.random() * 9000).toString()));
+        const docRef = doc(db, 'exhibits', entry);
+        const docSnap = (await getDoc(docRef)).data();
+        setTitle(docSnap.title);
+        setMediaType(docSnap.mediaType || 'image');
+        setMediaLink(docSnap.mediaLink);
+        setAudioLink(docSnap.audioLink);
+        setContent(docSnap.content);
+        setArticleLink(docSnap.articleLink || [{ title: '', link: '' }]);
+        setExhibitID(docSnap.exhibitID || // Generate a unique 4-digit code
+          (Math.floor(1000 + Math.random() * 9000).toString()));
 
-      
-    setDocRef(docRef);
+
+        setDocRef(docRef);
+      }
+      catch (error) {
+        console.error('Error fetching exhibit data: ', error);
+      }
+    };
+    fetchData();
   }
-  catch (error) {
-    console.error('Error fetching exhibit data: ', error);
-  }
-  };
-  fetchData();
-}
-  , [entry]);
+    , [entry]);
 
   useEffect(() => {
     const qrCodeValue = `https://10.8.202.70:3006/?exhibitID=${exhibitID}`;
