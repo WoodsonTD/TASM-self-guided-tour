@@ -78,7 +78,7 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
       <ExhibitTitle title={exhibit.title} bodyText={exhibit.content} />
       {media}
       <p
-        className='text-black text-center md:w-10/12 w-10/12 m-auto p-4 whitespace-pre-wrap'
+        className='text-black text-center md:w-10/12 w-11/12 m-auto p-4 whitespace-pre-wrap'
       >
         {exhibit.content}
       </p>
