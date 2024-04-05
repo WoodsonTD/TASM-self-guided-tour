@@ -29,14 +29,14 @@ export default function ListViewComponent({ entry, setEntry }) {
 
   return (
     <div>
+      <h1 className='text-2xl text-white text-center'>Exhibit List</h1>
       <Button
         label="Add New Exhibit"
         onClick={() => handleAddExhibit()}
         icon={null}
         className="btn rounded-md py-0.5 px-3 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
       />
-      <h1 className='text-2xl text-white text-center'>Exhibit List</h1>
-      <table className='mx-auto'>
+      <table className='mx-auto text-left rounded-md bg-lightBlue bg-opacity-20 border-collapse'>
         <thead>
           <tr>
             <th>Exhibit Name</th>

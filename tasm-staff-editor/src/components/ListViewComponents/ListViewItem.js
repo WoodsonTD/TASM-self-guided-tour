@@ -14,10 +14,10 @@ export default function ListViewItem({ exhibit, setEntry }) {
   };
 
   return (
-    <tr key={exhibit.id}>
-      <td>{exhibit.data().title}</td>
-      <td>{exhibit.data().exhibitID}</td>
-      <td>
+    <tr className="my-20 border-collapse border-t-2 border-opacity-50 border-darkBlue" key={exhibit.id}>
+      <td className="bg-opacity-15 bg-lightBlue  rounded-l-xl">{exhibit.data().title}</td>
+      <td className="bg-opacity-15 bg-lightBlue">{exhibit.data().exhibitID}</td>
+      <td className="bg-opacity-15 bg-lightBlue">
         <Button
           label="EDIT"
           onClick={() => setEntry(exhibit.id)}
@@ -26,15 +26,15 @@ export default function ListViewItem({ exhibit, setEntry }) {
         />
       </td>
       {/* <td>HIDE</td> */}
-      <td>ORDER</td>
-      <td>Move Up</td>
-      <td>Move Down</td>
-      <td>
+      <td className="bg-opacity-15 bg-lightBlue">ORDER</td>
+      <td className="bg-opacity-15 bg-lightBlue">Move Up</td>
+      <td className="bg-opacity-15 bg-lightBlue">Move Down</td>
+      <td className="bg-opacity-15 bg-lightBlue rounded-r-xl">
         <Button
           label="DELETE"
           onClick={handleDelete}
           icon={null}
-          className="btn rounded-md py-0.5 px-3 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+          className="btn rounded-md py-0.5 px-3 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] align-"
         />
       </td>
     </tr>
