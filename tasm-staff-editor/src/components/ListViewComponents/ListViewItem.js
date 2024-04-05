@@ -22,7 +22,7 @@ export default function ListViewItem({ exhibit, setEntry }) {
           label="EDIT"
           onClick={() => setEntry(exhibit.id)}
           icon={null}
-          className="btn rounded-md py-0.5 px-3 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+          className="btn rounded-md py-0.5 px-3 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
         />
       </td>
       {/* <td>HIDE</td> */}
@@ -34,7 +34,7 @@ export default function ListViewItem({ exhibit, setEntry }) {
           label="DELETE"
           onClick={handleDelete}
           icon={null}
-          className="btn rounded-md py-0.5 px-3 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+          className="btn rounded-md py-0.5 px-3 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] mx-auto mr-1"
         />
       </td>
     </tr>
