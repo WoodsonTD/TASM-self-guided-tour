@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import QRCodeComponent from './QRCodeComponent.js';
 import { db } from '../../firebase.js';
-import { collection, addDoc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, getDoc, doc } from 'firebase/firestore';
 import ExhibitTitle from './ExhibitTitle.js';
 import MediaType from './MediaType.js';
 import ExhibitContent from './ExhibitContent.js';
@@ -10,7 +10,7 @@ import Button from '../ButtonPanel/Button.js';
 import { CheckIcon } from '@heroicons/react/24/outline';
 
 
-function ExhibitForm() {
+function ExhibitForm({ entry, setEntry}) {
   const [title, setTitle] = useState('');
   // const [id, setId] = useState('');
   const [mediaType, setMediaType] = useState('image');
@@ -21,7 +21,43 @@ function ExhibitForm() {
   const [qrCodeValue, setQrCodeValue] = useState('');
   const [exhibitID, setExhibitID] = useState('');
 
+  // The document reference for the exhibit
+  const [docRef, setDocRef] = useState(null);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+    const docRef = doc(db, 'exhibits', entry);
+    const docSnap = (await getDoc(docRef)).data();
+    setTitle(docSnap.title);
+    setMediaType(docSnap.mediaType);
+    setMediaLink(docSnap.mediaLink);
+    setAudioLink(docSnap.audioLink);
+    setContent(docSnap.content);
+    setArticleLink(docSnap.articleLink);
+    setExhibitID(docSnap.exhibitID || // Generate a unique 4-digit code
+      (Math.floor(1000 + Math.random() * 9000).toString()));
+
+      
+    setDocRef(docRef);
+  }
+  catch (error) {
+    console.error('Error fetching exhibit data: ', error);
+  }
+  };
+  fetchData();
+}
+  , [entry]);
+
+  useEffect(() => {
+    const qrCodeValue = `https://10.8.202.70:3006/?exhibitID=${exhibitID}`;
+    setQrCodeValue(qrCodeValue);
+  }, [exhibitID]);
+
+
   const handleChange = (event) => {
+
     const { name, value } = event.target;
 
     if (name === 'articleLink') {
@@ -46,6 +82,7 @@ function ExhibitForm() {
           setContent(value);
           break;
         default:
+          console.error('Invalid input name:', name);
           break;
       }
     }
@@ -56,6 +93,7 @@ function ExhibitForm() {
   };
 
   const handleSubmit = async (event) => {
+
     event.preventDefault();
     try {
       const exhibitData = {
@@ -65,29 +103,12 @@ function ExhibitForm() {
         audioLink,
         content,
         articleLink,
+        exhibitID,
+        qrCodeValue,
       };
-      const docRef = await addDoc(collection(db, 'exhibits'), exhibitData);
-      console.log('Exhibit data saved to Firestore');
-
-      // Generate the URL or identifier for the QR code
-      const qrCodeValue = `http://localhost:3000/exhibits/${docRef.id}`;
-      setQrCodeValue(qrCodeValue);
-
-      // Generate a unique 4-digit code
-      setExhibitID(Math.floor(1000 + Math.random() * 9000).toString());
-      console.log('Generated 4-digit code:', exhibitID);
-
       // Update the exhibit data in Firestore with the 4-digit code
-      await updateDoc(docRef, { exhibitID });
+      await updateDoc(docRef, exhibitData);
 
-
-      // Clear the form fields
-      setTitle('');
-      setMediaType('None');
-      setMediaLink('');
-      setAudioLink('');
-      setContent('');
-      setArticleLink(['']);
     } catch (error) {
       console.error('Error saving exhibit data:', error);
     }
