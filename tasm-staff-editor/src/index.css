@@ -6,7 +6,7 @@
 .btn {
     @apply bg-red text-white font-exo2 flex items-center justify-center cursor-pointer
     hover:bg-lightRed hover:-translate-y-0.5 transform transition focus:outline-none
-    focus:ring-2 focus:ring-inset focus:ring-white focus:ring-opacity-75
+    focus:ring-2 focus:ring-inset focus:ring-white focus:ring-opacity-75 active:bg-notAsDarkRed
   }
 
 .nav {
@@ -26,5 +26,5 @@
 .file-btn {
   @apply file:text-base file:border-none file:rounded-full
   file:px-3 file:py-1 file:mr-5 file:m-5  file:cursor-pointer file:bg-red file:text-white
-  file:shadow-lg file:shadow-red/50 file:hover:bg-lightRed file:hover:-translate-y-0.5 file:transform
+  file:shadow-lg file:shadow-red/50 file:hover:bg-lightRed file:hover:-translate-y-0.5 file:transform file:active:bg-notAsDarkRed
 }
