@@ -1,5 +1,5 @@
-import { db } from '../../firebase.js'
-import { collection, getDocs, addDoc, doc, updateDoc } from 'firebase/firestore'
+import { db } from '../../firebase.js';
+import { collection, getDocs, addDoc, doc, updateDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import ListViewItem from './ListViewItem.js';
 import Button from '../ButtonPanel/Button.js';
@@ -15,17 +15,17 @@ export default function ListViewComponent({ entry, setEntry }) {
         const q = await getDocs(collection(db, 'exhibits'));
         setExhibitData(q.docs);
       } catch (error) {
-        console.error("ERROR:"+error);
+        console.error("ERROR:" + error);
       }
-    }
+    };
     fetchData();
   }, [entry]);
 
   const handleAddExhibit = async () => {
     const docRef = await addDoc(collection(db, 'exhibits'), {});
-      console.log('Exhibit data saved to Firestore');
-      setEntry(docRef.id);
-  }
+    console.log('Exhibit data saved to Firestore');
+    setEntry(docRef.id);
+  };
 
   const handleOrderChange = async (event, exhibit) => {
     const newOrder = parseInt(event.target.value);
@@ -51,7 +51,7 @@ export default function ListViewComponent({ entry, setEntry }) {
       if (parseInt(a.data().order) < parseInt(b.data().order)) {
         console.log(a.data().order + " < " + b.data().order);
         return -1;
-      }else{
+      } else {
         return 1;
       }
     }
@@ -83,17 +83,17 @@ export default function ListViewComponent({ entry, setEntry }) {
             </tr>
           </thead>
           <tbody className="">
-            {exhibitData.sort(sortExhibits).map((exhibit) =>{ return( <ListViewItem exhibit={exhibit} setEntry={setEntry} handleOrderChange={handleOrderChange} order={exhibit.data().order} />)})}
+            {exhibitData.sort(sortExhibits).map((exhibit) => { return (<ListViewItem exhibit={exhibit} setEntry={setEntry} handleOrderChange={handleOrderChange} order={exhibit.data().order} />); })}
           </tbody>
         </table>
         <div className='flex justify-center mt-6'>
-        <Button
-          label="Add New Exhibit"
-          onClick={() => handleAddExhibit()}
-          icon={null}
-          className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] mb-10"
-        />
-      </div>
+          <Button
+            label="Add New Exhibit"
+            onClick={() => handleAddExhibit()}
+            icon={null}
+            className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] mb-10"
+          />
+        </div>
       </div>
     </div>
   );
