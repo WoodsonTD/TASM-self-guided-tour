@@ -1,4 +1,5 @@
-import React from 'react'
+import { ChevronDoubleLeftIcon } from '@heroicons/react/24/outline';
+import Button from '../ButtonPanel/Button';
 
 function Nav({selected, setSelected}) {
 
@@ -10,13 +11,23 @@ function Nav({selected, setSelected}) {
   }
 
   return (
-    <div>
-      <span className="nav">
-        <a href='https://console.firebase.google.com/u/1/project/tasm-tour/analytics/app/web:NTQ5NzcyYjMtMTkyYS00NTJhLWEwNGItNGVlMzgwMGNmZDdi/overview/reports~2Fdashboard%3Fr%3Dfirebase-overview&fpn%3D602869699809'>Firebase Analytics Link</a>
+    <div className='flex flex-row-reverse justify-between'>
+      
+      <span className=''>
+        <a
+          className="nav py-2 px-4" 
+          href='https://console.firebase.google.com/u/1/project/tasm-tour/analytics/app/web:NTQ5NzcyYjMtMTkyYS00NTJhLWEwNGItNGVlMzgwMGNmZDdi/overview/reports~2Fdashboard%3Fr%3Dfirebase-overview&fpn%3D602869699809'>Firebase Analytics Link</a>
       </span>
       {selected ?
-        <span className="nav">
-          <button onClick={handleBack}>Back</button>
+        <span className="">
+          <Button 
+          onClick={handleBack}
+          label="Back"
+          icon={ChevronDoubleLeftIcon}
+          iconProps={{className: "w-5 h-5"}}
+          iconPosition="left"
+          className={"btn_nav py-2 px-4"} 
+          />
         </span>
         : null
       }
