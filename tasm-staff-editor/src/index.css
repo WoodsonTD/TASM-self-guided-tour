@@ -22,11 +22,11 @@
 }
 
 .listView th {
-  @apply p-2
+  @apply pt-2 pl-3 pr-3
 }
 
 .listView td {
-  @apply p-2
+  @apply p-2 truncate
 }
 
 .input {
