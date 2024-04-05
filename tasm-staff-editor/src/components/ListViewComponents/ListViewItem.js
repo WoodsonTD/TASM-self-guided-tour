@@ -1,20 +1,33 @@
 import Button from "../ButtonPanel/Button";
-export default function ListViewItem({ exhibit, setEntry }) {
+import { db } from "../../firebase";
+import { doc, deleteDoc } from "firebase/firestore";
+import { useState } from "react";
+
+export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order }) {
+  const [displayOrder, setDisplayOrder] = useState(order);
+
   if (!exhibit) {
     console.error("ERROR: exhibit is null");
     return null;
   }
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this exhibit?");
     if (confirmDelete) {
       // Perform the delete operation here
       // Still needs to be added
-      console.warn("Delete operation not yet implemented!");
+      const superConfirm = window.confirm("Are you really sure you want to delete this exhibit?");
+      if (superConfirm) {
+        try {
+          await deleteDoc(doc(db, "exhibits", exhibit.id));
+        } catch (error) {
+          console.error("ERROR: " + error);
+        }
+      }
     }
   };
 
   return (
-    <tr className="my-20 border-collapse border-t-2 border-opacity-50 border-darkBlue" key={exhibit.id}>
+    <tr className="my-20 border-collapse border-t-2 border-opacity-50 border-darkBlue" key={exhibit.data().order || exhibit.id}>
       <td className="bg-opacity-15 bg-lightBlue  rounded-l-xl">{exhibit.data().title}</td>
       <td className="bg-opacity-15 bg-lightBlue">{exhibit.data().exhibitID}</td>
       <td className="bg-opacity-15 bg-lightBlue">
@@ -26,7 +39,14 @@ export default function ListViewItem({ exhibit, setEntry }) {
         />
       </td>
       {/* <td>HIDE</td> */}
-      <td className="bg-opacity-15 bg-lightBlue">ORDER</td>
+      <td className="bg-opacity-15 bg-lightBlue">
+        <input
+          type="number"
+          className="input w-12"
+          value={displayOrder}
+          onChange={(e) => { handleOrderChange(e, exhibit); }}
+        />
+      </td>
       <td className="bg-opacity-15 bg-lightBlue">Move Up</td>
       <td className="bg-opacity-15 bg-lightBlue">Move Down</td>
       <td className="bg-opacity-15 bg-lightBlue rounded-r-xl">
