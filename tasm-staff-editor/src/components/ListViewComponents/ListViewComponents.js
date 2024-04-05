@@ -68,31 +68,32 @@ export default function ListViewComponent({ entry, setEntry }) {
   return (
     <div>
       <h1 className='text-2xl text-white text-center mb-4'>Exhibit List</h1>
-  
-      <table className='listView mx-auto text-left rounded-md bg-lightBlue bg-opacity-20 border-collapse text-gray'>
-        <thead>
-          <tr>
-            <th >Exhibit Name</th>
-            <th>Exhibit ID</th>
-            <th className=''>EDIT</th>
-            {/* <th>HIDE</th> */}
-            <th>ORDER</th>
-            <th>Move Up</th>
-            <th>Move Down</th>
-            <th >Delete Exhibit Page</th>
-          </tr>
-        </thead>
-        <tbody>
-          {exhibitData.sort(sortExhibits).map((exhibit) =>{ return( <ListViewItem exhibit={exhibit} setEntry={setEntry} handleOrderChange={handleOrderChange} order={exhibit.data().order} />)})}
-        </tbody>
-      </table>
-      <div className='flex justify-center mt-6'>
-      <Button
-        label="Add New Exhibit"
-        onClick={() => handleAddExhibit()}
-        icon={null}
-        className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] mb-10"
-      />
+      <div className="overflow-x-auto">
+        <table className='listView mx-auto md:text-left rounded-md bg-lightBlue border-collapse bg-opacity-20 text-gray'>
+          <thead>
+            <tr>
+              <th >Exhibit Name</th>
+              <th>Exhibit ID</th>
+              <th className=''>EDIT</th>
+              {/* <th>HIDE</th> */}
+              <th className="hidden md:table-cell">ORDER</th>
+              <th>Move Up</th>
+              <th>Move Down</th>
+              <th className="hidden md:table-cell">Delete Exhibit Page</th>
+            </tr>
+          </thead>
+          <tbody className="">
+            {exhibitData.sort(sortExhibits).map((exhibit) =>{ return( <ListViewItem exhibit={exhibit} setEntry={setEntry} handleOrderChange={handleOrderChange} order={exhibit.data().order} />)})}
+          </tbody>
+        </table>
+        <div className='flex justify-center mt-6'>
+        <Button
+          label="Add New Exhibit"
+          onClick={() => handleAddExhibit()}
+          icon={null}
+          className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] mb-10"
+        />
+      </div>
       </div>
     </div>
   );
