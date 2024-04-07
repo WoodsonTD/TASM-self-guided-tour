@@ -96,6 +96,9 @@ function ExhibitForm({ entry, setEntry }) {
 
     event.preventDefault();
     try {
+      // Generate the URL or identifier for the QR code
+      const qrCodeValue = `http://localhost:3001/?exhibitID=${exhibitID}`;
+      setQrCodeValue(qrCodeValue);
       const exhibitData = {
         title,
         mediaType,
