@@ -1,17 +1,29 @@
 import Button from "../ButtonPanel/Button";
+import { db } from "../../firebase";
+import { doc, deleteDoc } from "firebase/firestore";
+import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
-export default function ListViewItem({ exhibit, setEntry }) {
+export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order }) {
+  const [displayOrder, setDisplayOrder] = useState(order);
+
   if (!exhibit) {
     console.error("ERROR: exhibit is null");
     return null;
   }
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this exhibit?");
     if (confirmDelete) {
       // Perform the delete operation here
       // Still needs to be added
-      console.warn("Delete operation not yet implemented!");
+      const superConfirm = window.confirm("Are you really sure you want to delete this exhibit?");
+      if (superConfirm) {
+        try {
+          await deleteDoc(doc(db, "exhibits", exhibit.id));
+        } catch (error) {
+          console.error("ERROR: " + error);
+        }
+      }
     }
   };
 
@@ -35,7 +47,14 @@ export default function ListViewItem({ exhibit, setEntry }) {
       </td>
       {/* <td>HIDE</td> */}
       <td className="hidden md:table-cell bg-opacity-15 bg-lightBlue">
-        ORDER
+        
+        <input
+          type="number"
+          className="input w-12"
+          value={displayOrder}
+          onChange={(e) => { handleOrderChange(e, exhibit); }}
+        />
+      
       </td>
       <td className="bg-opacity-15 bg-lightBlue">
         <div className="flex justify-center">
