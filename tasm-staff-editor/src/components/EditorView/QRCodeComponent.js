@@ -17,10 +17,10 @@ function QRCodeComponent({ value, exhibitID }) {
 
   return (
     <div className="flex flex-col items-center">
-      <h3 className="text-white">Generated QR Code:</h3>
-      <div ref={qrCodeRef} className="mb-4">
+      <h3 className="text-black">Generated QR Code:</h3>
+      <div ref={qrCodeRef} className="mb-1 pt-2 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]">
         <QRCode value={value} size={128} />
-        <p className="text-red">Exhibit ID: {exhibitID}</p>
+        <p className="text-black py-2">Exhibit ID: {exhibitID}</p>
       </div>
       <Button
         label="Download as PDF"
