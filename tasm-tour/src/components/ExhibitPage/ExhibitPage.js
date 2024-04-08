@@ -78,22 +78,22 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
       <ExhibitTitle title={exhibit.title} bodyText={exhibit.content} />
       {media}
       <p
-        className='text-black text-center md:w-2/3 m-auto p-4'
+        className='text-black text-center md:w-10/12 w-11/12 m-auto p-4 whitespace-pre-wrap'
       >
         {exhibit.content}
       </p>
-      {exhibit.furtherReading ? <FurtherReading furtherReading={exhibit.furtherReading} /> : null}
+      {exhibit.articleLink ? <FurtherReading articleLink={exhibit.articleLink} /> : null}
       <ButtonPanel setExhibitID={setExhibitID} nextExhibit={exhibit.next} prevExhibit={exhibit.prev} />
     </div>
   );
 }
 
-export function FurtherReading({ furtherReading }) {
+export function FurtherReading({ articleLink }) {
   return (
-    <div className="FurtherReading">
+    <div className="flex flex-col justify-center">
       <h2 className="text-5xl text-black text-center">Further Reading</h2>
-      <ul>
-        {furtherReading.map((item, index) => (
+      <ul className='text-center list-disc' >
+        {articleLink.map((item, index) => (
           <li key={index}>
             <a target="blank" href={item.link}>
               {item.title}

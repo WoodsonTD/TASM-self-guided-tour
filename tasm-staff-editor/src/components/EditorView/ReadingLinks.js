@@ -23,9 +23,9 @@ export default function ReadingLinks({ articleLink = [], onChange, onAddArticleL
             placeholder="Link Title"
             value={link.title}
             onChange={(event) => handleLinkChange(event, index, 'title')}
-            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
+            className="input"
           />
-          <label htmlFor={`further-link-${index}`} className='block mb-1 text-white'>
+          <label htmlFor={`further-link-${index}`} className='block mb-1 mt-2 text-white'>
             Link:
           </label>
           <input
@@ -34,7 +34,7 @@ export default function ReadingLinks({ articleLink = [], onChange, onAddArticleL
             value={link.link}
             placeholder='Add link here'
             onChange={(event) => handleLinkChange(event, index, 'link')}
-            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
+            className="input"
           />
         </div>
       ))}
