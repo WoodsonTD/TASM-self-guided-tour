@@ -1,34 +1,25 @@
 import Button from "../ButtonPanel/Button";
-import { db } from "../../firebase";
-import { doc, deleteDoc } from "firebase/firestore";
-import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
-export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order }) {
-  const [displayOrder, setDisplayOrder] = useState(order);
+export default function ListViewItem({ exhibit, setEntry, handleDelete, handleDragStart, handleDragEnd, handleDrop, handleOrderChange, order }) {
 
   if (!exhibit) {
     console.error("ERROR: exhibit is null");
     return null;
   }
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this exhibit?");
-    if (confirmDelete) {
-      // Perform the delete operation here
-      // Still needs to be added
-      const superConfirm = window.confirm("Are you really sure you want to delete this exhibit?");
-      if (superConfirm) {
-        try {
-          await deleteDoc(doc(db, "exhibits", exhibit.id));
-        } catch (error) {
-          console.error("ERROR: " + error);
-        }
-      }
-    }
-  };
-
+  //console.log(exhibit.id);
   return (
-    <tr className="border-t-8 border-opacity-0 border-darkBlue" key={exhibit.id}>
+    <tr className="border-t-8 border-opacity-0 border-darkBlue"
+      key={exhibit.id}
+      id={exhibit.id}
+      value={exhibit.order}
+      draggable="true"
+      onDrag={(e) => console.log("dragging")}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDrop={(e) => handleDrop(e,exhibit)}
+      onDragOver={(e) => e.preventDefault()}
+    >
       <td className="max-w-0 md:w-auto md:max-w-none whitespace-nowrap bg-opacity-15 bg-lightBlue rounded-l-xl">
         {exhibit.data().title}
       </td>
@@ -50,8 +41,8 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
         
         <input
           type="number"
-          className="input w-12"
-          value={displayOrder}
+          className="input w-12 text-navy"
+          value={order}
           onChange={(e) => { handleOrderChange(e, exhibit); }}
         />
       
@@ -60,7 +51,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
         <div className="flex justify-center">
           <Button
             label="MOVE"
-            onClick={null}
+            onClick={() => handleOrderChange({ target: { value: order - 1 } }, exhibit)}
             icon={ChevronUpIcon}
             iconProps={{ className: "w-6 h-6 md:w-5 md:h-5 ml-0 md:ml-1" }}
             iconPosition="right"
@@ -73,7 +64,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
         <div className="flex justify-center">
           <Button
             label="MOVE"
-            onClick={null}
+            onClick={() => handleOrderChange({ target: { value: order + 1 } }, exhibit)}
             icon={ChevronDownIcon}
             iconProps={{ className: "w-6 h-6 md:w-5 md:h-5 ml-0 md:ml-1" }}
             iconPosition="right"
