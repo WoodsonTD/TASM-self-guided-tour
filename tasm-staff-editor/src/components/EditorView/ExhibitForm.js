@@ -51,7 +51,7 @@ function ExhibitForm({ entry, setEntry }) {
     , [entry]);
 
   useEffect(() => {
-    const qrCodeValue = `https://10.8.202.70:3006/?exhibitID=${exhibitID}`;
+    const qrCodeValue = `https://tasm-tour.web.app/?exhibitID=${exhibitID}`;
     setQrCodeValue(qrCodeValue);
   }, [exhibitID]);
 
@@ -97,7 +97,7 @@ function ExhibitForm({ entry, setEntry }) {
     event.preventDefault();
     try {
       // Generate the URL or identifier for the QR code
-      const qrCodeValue = `http://localhost:3001/?exhibitID=${exhibitID}`;
+      const qrCodeValue = `https://tasm-tour.web.app/?exhibitID=${exhibitID}`;
       setQrCodeValue(qrCodeValue);
       const exhibitData = {
         title,
