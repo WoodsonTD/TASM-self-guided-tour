@@ -92,6 +92,16 @@ function ExhibitForm({ entry, setEntry }) {
     setArticleLink([...articleLink, { title: '', link: '' }]);
   };
 
+  const handleRemoveArticleLink = (indexToRemove) => {
+    // If there's only one link, clear the fields instead of removing
+    if (articleLink.length === 1) {
+      setArticleLink([{ title: '', link: '' }]);
+    } else {
+      // Otherwise, remove the link at the specified index
+      setArticleLink(articleLink.filter((_, index) => index !== indexToRemove));
+    }
+  };
+
   const handleSubmit = async (event) => {
 
     event.preventDefault();
@@ -135,6 +145,7 @@ function ExhibitForm({ entry, setEntry }) {
           articleLink={articleLink}
           onChange={handleChange}
           onAddArticleLink={handleAddArticleLink}
+          onRemoveArticleLink={handleRemoveArticleLink}
         />
         <div className="flex justify-center mt-6">
           <Button
