@@ -11,16 +11,18 @@ export default function ListViewComponent({ entry, setEntry }) {
   // let exhibitData = [];
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const q = await getDocs(collection(db, 'exhibits'));
-        setExhibitData(q.docs);
-      } catch (error) {
-        console.error("ERROR:" + error);
-      }
-    };
+  
     fetchData();
   }, [entry]);
+
+  const fetchData = async () => {
+    try {
+      const q = await getDocs(collection(db, 'exhibits'));
+      setExhibitData(q.docs);
+    } catch (error) {
+      console.error("ERROR:" + error);
+    }
+  };
 
   const handleDelete = async (exhibit) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this exhibit?");
@@ -29,8 +31,13 @@ export default function ListViewComponent({ entry, setEntry }) {
       // Still needs to be added
       const superConfirm = window.confirm("Are you really sure you want to delete this exhibit?");
       if (superConfirm) {
+        const docRef = doc(db, 'exhibits', exhibit.id);
         try {
-          await deleteDoc(doc(db, "exhibits", exhibit.id));
+
+          console.log("here...");
+          console.log(docRef.path);
+          await deleteDoc(docRef);
+          //fetchData();
         } catch (error) {
           console.error("ERROR: " + error);
         }
@@ -39,20 +46,18 @@ export default function ListViewComponent({ entry, setEntry }) {
   };
 
   const handleDragStart = (e) => {
-    console.log("drag start");
-    console.log(e.target);
     setDraggedExhibit(e.target.value);
   };
 
   const handleDragEnd = (e) => {
-    console.log("drag end");
     setDraggedExhibit(null);
   };
 
   const handleDrop = (event, exhibit) => {
     console.log("dropped");
-    console.log(event.target.value);
     console.log(exhibit.id);
+    console.log(draggedExhibit);
+    changeOrder(draggedExhibit, exhibit.data().order);
   };
 
   const handleAddExhibit = async () => {
@@ -67,6 +72,7 @@ export default function ListViewComponent({ entry, setEntry }) {
       return;
     }
     changeOrder(exhibit, newOrder);
+    fetchData();
   };
 
   const changeOrder = async (exhibit, newOrder) => {
@@ -85,17 +91,22 @@ export default function ListViewComponent({ entry, setEntry }) {
   };
 
   const sortExhibits = (a, b) => {
-    if (a.data().order != null && b.data().order != null) {
+    const orderA = a.data().order;
+    const orderB = b.data().order;
+    console.log(orderA);
+    console.log(orderB);
+
+    if (orderA != null && orderB != null && !(isNaN(orderA) || isNaN(orderB))) {
       if (parseInt(a.data().order) < parseInt(b.data().order)) {
         return -1;
       } else {
         return 1;
       }
     }
-    if (a.data().order != null && b.data().order == null) {
+    if (a.data().order != null && (orderB == null || isNaN(orderB))) {
       return -1;
     }
-    if (b.data().order != null && a.data().order == null) {
+    if (b.data().order != null && (orderA == null || isNaN(orderA))) {
       return 1;
     }
     return 0;
@@ -119,8 +130,9 @@ export default function ListViewComponent({ entry, setEntry }) {
             </tr>
           </thead>
           <tbody className="">
-            {exhibitData.sort(sortExhibits).map((exhibit) => { 
+            {exhibitData.sort(sortExhibits).map((exhibit, key) => { 
               return (<ListViewItem
+                key={key}
                 exhibit={exhibit} 
                 setEntry={setEntry} 
                 handleOrderChange={handleOrderChange} 

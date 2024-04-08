@@ -1,24 +1,30 @@
 import Button from "../ButtonPanel/Button";
+import { useState, useEffect } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
 export default function ListViewItem({ exhibit, setEntry, handleDelete, handleDragStart, handleDragEnd, handleDrop, handleOrderChange, order }) {
-
+  const [displayOrder, setDisplayOrder] = useState(order);
+  
+  useEffect(() => {
+    setDisplayOrder(order);
+  }, [order]);  
+  
+  
   if (!exhibit) {
     console.error("ERROR: exhibit is null");
     return null;
   }
+
   //console.log(exhibit.id);
   return (
     <tr className="border-t-8 border-opacity-0 border-darkBlue"
       key={exhibit.id}
       id={exhibit.id}
-      value={exhibit.order}
-      draggable="true"
-      onDrag={(e) => console.log("dragging")}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDrop={(e) => handleDrop(e,exhibit)}
-      onDragOver={(e) => e.preventDefault()}
+      // draggable="true"
+      // onDragStart={() => handleDragStart({target: { value: exhibit.id }})}
+      // onDragEnd={handleDragEnd}
+      // onDrop={(e) => handleDrop(e,exhibit)}
+      // onDragOver={(e) => e.preventDefault()}
     >
       <td className="max-w-0 md:w-auto md:max-w-none whitespace-nowrap bg-opacity-15 bg-lightBlue rounded-l-xl">
         {exhibit.data().title}
@@ -42,7 +48,7 @@ export default function ListViewItem({ exhibit, setEntry, handleDelete, handleDr
         <input
           type="number"
           className="input w-12 text-navy"
-          value={order}
+          value={displayOrder}
           onChange={(e) => { handleOrderChange(e, exhibit); }}
         />
       
@@ -51,7 +57,7 @@ export default function ListViewItem({ exhibit, setEntry, handleDelete, handleDr
         <div className="flex justify-center">
           <Button
             label="MOVE"
-            onClick={() => handleOrderChange({ target: { value: order - 1 } }, exhibit)}
+            onClick={() => {handleOrderChange({ target: { value: displayOrder - 1 } }, exhibit);}}
             icon={ChevronUpIcon}
             iconProps={{ className: "w-6 h-6 md:w-5 md:h-5 ml-0 md:ml-1" }}
             iconPosition="right"
@@ -64,7 +70,7 @@ export default function ListViewItem({ exhibit, setEntry, handleDelete, handleDr
         <div className="flex justify-center">
           <Button
             label="MOVE"
-            onClick={() => handleOrderChange({ target: { value: order + 1 } }, exhibit)}
+            onClick={() => {handleOrderChange({ target: { value: order + 1 } }, exhibit);}}
             icon={ChevronDownIcon}
             iconProps={{ className: "w-6 h-6 md:w-5 md:h-5 ml-0 md:ml-1" }}
             iconPosition="right"
@@ -77,7 +83,7 @@ export default function ListViewItem({ exhibit, setEntry, handleDelete, handleDr
         <div className="flex justify-center">
           <Button
             label="DELETE"
-            onClick={handleDelete}
+            onClick={() => handleDelete(exhibit)}
             icon={null}
             className="btn rounded-md py-0.5 px-3 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
           />
