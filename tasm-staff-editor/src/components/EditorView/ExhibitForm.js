@@ -120,9 +120,9 @@ function ExhibitForm({ entry, setEntry }) {
   return (
     <div className='flex flex-col items-center justify-center text-lg'>
       <h1 className="text-2xl text-white">Exhibit Form</h1>
-      <form className="w-full max-w-4xl mx-4 md:mx-8 lg:mx-12 xl:mx-16 px-6 py-10" onSubmit={handleSubmit}>
+      <form className="w-full max-w-4xl mx-4 md:mx-8 lg:mx-12 xl:mx-16 px-6 pb-10 pt-6" onSubmit={handleSubmit}>
         <ExhibitTitle title={title} onChange={handleChange} />
-        <div className="flex flex-col md:flex-row justify-between items-center md:space-x-4 mb-4">
+        <div className="qrContainer">
           <MediaType
             mediaType={mediaType}
             mediaLink={mediaLink}
