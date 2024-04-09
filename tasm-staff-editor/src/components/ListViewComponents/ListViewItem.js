@@ -15,7 +15,6 @@ export default function ListViewItem({ exhibit, setEntry, handleDelete, handleDr
     return null;
   }
 
-  //console.log(exhibit.id);
   return (
     <tr className="border-t-8 border-opacity-0 border-darkBlue"
       key={exhibit.id}
@@ -47,7 +46,9 @@ export default function ListViewItem({ exhibit, setEntry, handleDelete, handleDr
         
         <input
           type="number"
-          className="input w-12 text-navy"
+          //We need to hide the spinner for the input field, as directions do not match the design
+          style={{ "-moz-appearance": "textfield" , "-webkit-appearance": "textfield", "appearance": "textfield"}}
+          className="input max-w-16 text-navy no-spin"
           value={displayOrder}
           onChange={(e) => { handleOrderChange(e, exhibit); }}
         />

@@ -11,14 +11,25 @@ export default function ListViewComponent({ entry, setEntry }) {
   // let exhibitData = [];
 
   useEffect(() => {
-  
+
     fetchData();
   }, [entry]);
 
   const fetchData = async () => {
     try {
       const q = await getDocs(collection(db, 'exhibits'));
-      setExhibitData(q.docs);
+      const sortedData = q.docs.sort(sortExhibits);
+      let lastOrder = null;
+      sortedData.forEach(async (doc, index) => {
+        if (isNaN(doc.data().order) || doc.data().order == null || doc.data().order < 0) { console.log(doc.data().order); return; }
+        if (lastOrder != null ) {
+          console.log(doc.data().order);
+          await updateDoc(doc.ref, { order: lastOrder + 1 });
+          console.log(doc.data().order);
+        }
+        
+      });
+      setExhibitData(sortedData);
     } catch (error) {
       console.error("ERROR:" + error);
     }
@@ -33,11 +44,8 @@ export default function ListViewComponent({ entry, setEntry }) {
       if (superConfirm) {
         const docRef = doc(db, 'exhibits', exhibit.id);
         try {
-
-          console.log("here...");
-          console.log(docRef.path);
           await deleteDoc(docRef);
-          //fetchData();
+          fetchData();
         } catch (error) {
           console.error("ERROR: " + error);
         }
@@ -72,7 +80,7 @@ export default function ListViewComponent({ entry, setEntry }) {
       return;
     }
     changeOrder(exhibit, newOrder);
-    fetchData();
+
   };
 
   const changeOrder = async (exhibit, newOrder) => {
@@ -87,14 +95,12 @@ export default function ListViewComponent({ entry, setEntry }) {
         updateDoc(doc.ref, { order: exhibit.data().order });
       }
     });
-    updateDoc(fb_doc, { order: newOrder });
+    updateDoc(fb_doc, { order: newOrder }).then(fetchData);
   };
 
   const sortExhibits = (a, b) => {
     const orderA = a.data().order;
     const orderB = b.data().order;
-    console.log(orderA);
-    console.log(orderB);
 
     if (orderA != null && orderB != null && !(isNaN(orderA) || isNaN(orderB))) {
       if (parseInt(a.data().order) < parseInt(b.data().order)) {
@@ -130,18 +136,19 @@ export default function ListViewComponent({ entry, setEntry }) {
             </tr>
           </thead>
           <tbody className="">
-            {exhibitData.sort(sortExhibits).map((exhibit, key) => { 
+            {exhibitData.sort(sortExhibits).map((exhibit, key) => {
               return (<ListViewItem
                 key={key}
-                exhibit={exhibit} 
-                setEntry={setEntry} 
-                handleOrderChange={handleOrderChange} 
+                exhibit={exhibit}
+                setEntry={setEntry}
+                handleOrderChange={handleOrderChange}
                 handleDelete={handleDelete}
                 handleDragStart={handleDragStart}
                 handleDragEnd={handleDragEnd}
                 handleDrop={handleDrop}
-                order={exhibit.data().order} 
-              />); })}
+                order={exhibit.data().order}
+              />);
+            })}
           </tbody>
         </table>
         <div className='flex justify-center mt-6'>
