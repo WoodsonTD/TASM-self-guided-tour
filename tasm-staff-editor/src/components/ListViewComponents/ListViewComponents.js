@@ -22,12 +22,13 @@ export default function ListViewComponent({ entry, setEntry }) {
       let lastOrder = null;
       sortedData.forEach(async (doc, index) => {
         if (isNaN(doc.data().order) || doc.data().order == null || doc.data().order < 0) { console.log(doc.data().order); return; }
-        if (lastOrder != null ) {
-          console.log(doc.data().order);
-          await updateDoc(doc.ref, { order: lastOrder + 1 });
-          console.log(doc.data().order);
+        if (lastOrder !== null ) {
+          console.log("Doc Order: " + doc.data().order + " Last Order: " + lastOrder);
+          await updateDoc(doc.ref, { order: (++lastOrder) });
+          console.log("Doc Order: " + doc.data().order + " Last Order: " + lastOrder);
+          return;
         }
-        
+        lastOrder = doc.data().order;
       });
       setExhibitData(sortedData);
     } catch (error) {
