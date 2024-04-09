@@ -44,3 +44,12 @@
   file:px-3 file:py-1 file:mr-5 file:m-5  file:cursor-pointer file:bg-red file:text-white
   file:shadow-lg file:shadow-red/50 file:hover:bg-lightRed file:hover:-translate-y-0.5 file:transform file:active:bg-notAsDarkRed
 }
+
+.qrContainer {
+  @apply flex flex-col md:flex-row justify-between items-center md:space-x-4 mb-4
+  border-none bg-gray rounded-3xl p-4 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]
+}
+
+.imageLink {
+  @apply text-darkBlue hover:underline drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] hover:text-lightBlue hover:translate-y-0.5 transform transition
+}
