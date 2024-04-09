@@ -19,6 +19,19 @@ export default function ListViewComponent({ entry, setEntry }) {
     try {
       const q = await getDocs(collection(db, 'exhibits'));
       const sortedData = q.docs.sort(sortExhibits);
+
+      // let lastOrder = null;
+      // sortedData.forEach(async (doc, index) => {
+      //   if (isNaN(doc.data().order) || doc.data().order == null || doc.data().order < 0) { console.log(doc.data().order); return; }
+      //   if (lastOrder !== null ) {
+      //     console.log("Doc Order: " + doc.data().order + " Last Order: " + lastOrder);
+      //     await updateDoc(doc.ref, { order: (++lastOrder) });
+      //     console.log("Doc Order: " + doc.data().order + " Last Order: " + lastOrder);
+      //     return;
+      //   }
+      //   lastOrder = doc.data().order;
+      // });
+
       setExhibitData(sortedData);
     } catch (error) {
       console.error("ERROR:" + error);
