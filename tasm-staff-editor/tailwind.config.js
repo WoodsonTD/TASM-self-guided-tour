@@ -31,6 +31,7 @@ module.exports = {
       lightRed: "#D43F47",
       white: "#FFFFFF",
       gray: "#D9D9D9",
+      black: "#000000",
     },
     fontFamily: {
       exo2: ['"Exo 2"', 'sans-serif']
