@@ -16,17 +16,6 @@ export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
         .map(doc => ({ id: doc.id, order: doc.data().order, ...doc.data() }))
         .sort((a, b) => a.order - b.order);
 
-      // let lastOrder =  0;
-      // for (let exhibit of sortedData) {
-      //   if ((isNaN(exhibit.order) || exhibit.order == null || exhibit.order > lastOrder) && exhibit.order>0){
-      //     //lastOrder++;
-      //   //  await updateDoc(doc(db, 'exhibits', exhibit.id), { order: lastOrder });
-      //     exhibit.order = lastOrder;
-      //   }
-      //     lastOrder = exhibit.order+1;
-
-      // }
-
       validateOrder(sortedData);
     } catch (error) {
       console.error('ERROR:', error);
@@ -41,11 +30,8 @@ export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
     const index = exhibitData.findIndex(exhibit => exhibit.id === exhibitId);
     if (index > 0) {
       // Swap order with the previous item
-      const newOrder = exhibitData[index].order;
       const prevOrder = exhibitData[index - 1].order;
-      await updateDoc(doc(db, 'exhibits', exhibitId), { order: prevOrder });
-      await updateDoc(doc(db, 'exhibits', exhibitData[index - 1].id), { order: newOrder });
-      fetchData(); // Refetch the data after update
+      doOrderChange(exhibitData[index], prevOrder);
     }
   };
 
@@ -53,25 +39,10 @@ export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
     const index = exhibitData.findIndex(exhibit => exhibit.id === exhibitId);
     if (index < exhibitData.length - 1) {
       // Swap order with the next item
-      const newOrder = exhibitData[index].order;
       const nextOrder = exhibitData[index + 1].order;
       doOrderChange(exhibitData[index], nextOrder);
     }
   };
-
-  // const sortedData = exhibitData || false;
-  // if (sortedData) {
-  //   let lastOrder = 0;
-  //   for (let exhibit of sortedData) {
-  //     if ((isNaN(exhibit.order) || exhibit.order == null || exhibit.order > lastOrder) && exhibit.order > 0) {
-  //       //lastOrder++;
-  //       //  await updateDoc(doc(db, 'exhibits', exhibit.id), { order: lastOrder });
-  //       exhibit.order = lastOrder;
-  //     }
-  //     lastOrder = exhibit.order + 1;
-
-  //   }
-  // }
 
   const handleAddExhibit = async () => {
     const docRef = await addDoc(collection(db, 'exhibits'), {});
