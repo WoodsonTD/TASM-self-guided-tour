@@ -1,115 +1,171 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
+import Button from "../ButtonPanel/Button";
+import logo from '../../assets/images/tasm-logo-p-500.png';
 
 const SignUp = ({ onClose }) => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+  // Refs for input fields to manage focus
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const validateEmail = (email) => {
+    // Simple regex for basic email validation
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
+  const validatePassword = (password) => {
+    return {
+      length: password.length >= 8,
+      numberOrSymbol: /[0-9\W]/.test(password),
+      upperAndLowerCase: /[a-z]/.test(password) && /[A-Z]/.test(password),
+    };
+  };
+
+  const generatePasswordErrorMessage = (password) => {
+    const validationResult = validatePassword(password);
+    const messages = {
+      length: "be at least 8 characters long.",
+      numberOrSymbol: "include at least one number or symbol.",
+      upperAndLowerCase: "include both lower and upper case characters.",
+    };
+
+    return Object.keys(validationResult).map((key) => {
+      const isValid = validationResult[key];
+      return (
+        <p key={key} className={isValid ? "validation-check" : "validation-cross"}>
+          {isValid ? "✓" : "✕"} {messages[key]}
+        </p>
+      );
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle sign-up form submission, e.g., send data to the server
-    console.log(formData);
-    // Clear form fields and hide the modal after successful sign-up
-    setFormData({ firstName: "", lastName: "", email: "", password: "" });
-    onClose();
+    setEmailError("");
+    setPasswordError("");
+
+    if (!email || !validateEmail(email)) {
+      setEmailError("Please enter a valid email.");
+      emailRef.current && emailRef.current.focus();
+      return; // Stop the submission
+    }
+
+    // Check if all password validation conditions are true
+    const passwordConditions = validatePassword(password);
+    const allPasswordConditionsMet = Object.values(passwordConditions).every(Boolean);
+    if (!password || !allPasswordConditionsMet) {
+      setPasswordError("Password must have 8 characters, a number or special character, and uppercase letter");
+      passwordRef.current && passwordRef.current.focus();
+      return; // Stop the submission
+    }
+
+    if (!emailError && !passwordError) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // User created successfully
+          console.log(userCredential);
+          onClose(); // Close the sign-up modal or redirect the user
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+
+          // Display different error messages based on errorCode
+          if (errorCode === 'auth/email-already-in-use') {
+            setEmailError('This email is already in use.');
+          } else if (errorCode === 'auth/invalid-email') {
+            setEmailError('The email address is invalid.');
+          } else if (errorCode === 'auth/weak-password') {
+            setPasswordError('The password is too weak.');
+          } else {
+            setEmailError('Failed to sign up. Please try again later.');
+          }
+
+          // If the error is with the password, set focus back to the password field
+          if (errorCode.startsWith('auth/weak-password') || errorCode.startsWith('auth/wrong-password')) {
+            passwordRef.current && passwordRef.current.focus();
+          } else {
+            emailRef.current && emailRef.current.focus();
+          }
+        });
+    }
   };
 
   return (
-    <div className="fixed z-10 inset-0 overflow-y-auto">
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <h2 className="text-lg font-medium text-gray-900">Sign Up</h2>
-            <form className="mt-4" onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label
-                  className="block mb-2 text-sm font-medium text-gray-900"
-                  htmlFor="firstName"
-                >
-                  First Name
-                </label>
-                <input
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
-                  id="firstName"
-                  type="text"
-                  placeholder="First Name"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  required
-                />
+    <div className=" relative flex justify-center items-center h-screen">
+      <div className="absolute top-0 mt-2">
+        <img src={logo} alt='TASM Logo' className="object-scale-down h-48 m-2" />
+      </div>
+      <div className="w-full max-w-xs">
+        <form
+          noValidate
+          className="bg-gray shadow-md rounded-lg px-8 py-6 mb-4 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+          onSubmit={handleSubmit}
+        >
+          <h1 className="text-3xl text-black text-center mb-4">Sign Up</h1>
+          <div className="mb-4">
+            <label
+              className="block mb-2 text-lg text-black font-medium"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              ref={emailRef}
+              className="input"
+              id="email"
+              type="email"
+              placeholder="Email"
+              aria-invalid={emailError ? "true" : "false"}
+              aria-labelledby="email-label"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {emailError && (
+              <div className="text-red text-xs italic mt-2" aria-live="assertive">
+                <p>{emailError}</p>
               </div>
-              <div className="mb-4">
-                <label
-                  className="block mb-2 text-sm font-medium text-gray-900"
-                  htmlFor="lastName"
-                >
-                  Last Name
-                </label>
-                <input
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
-                  id="lastName"
-                  type="text"
-                  placeholder="Last Name"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  className="block mb-2 text-sm font-medium text-gray-900"
-                  htmlFor="email"
-                >
-                  Email
-                </label>
-                <input
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-6">
-                <label
-                  className="block mb-2 text-sm font-medium text-gray-900"
-                  htmlFor="password"
-                >
-                  Password
-                </label>
-                <input
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="btn rounded-r-full pr-1 pl-3 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
-                >
-                  Sign Up
-                </button>
-              </div>
-            </form>
+            )}
           </div>
-        </div>
+          <div className="mb-6">
+            <label
+              className="block mb-2 text-lg text-black font-medium"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              ref={passwordRef}
+              className="input"
+              id="password"
+              type="password"
+              placeholder="Password"
+              aria-invalid={passwordError ? "true" : "false"}
+              aria-labelledby="password-label"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {passwordError && (
+              <div className="text-xs italic mt-2" aria-live="assertive">
+                <p>Your password needs to:</p>
+                <div>{generatePasswordErrorMessage(password)}</div>
+              </div>
+            )}
+          </div>
+          <div className="flex justify-end">
+            <Button
+              label="Sign Up"
+              type="submit"
+              className="btn rounded-xl p-2 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+            />
+          </div>
+        </form>
       </div>
     </div>
   );

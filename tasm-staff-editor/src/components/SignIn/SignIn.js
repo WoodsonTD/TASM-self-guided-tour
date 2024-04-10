@@ -1,105 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import Button from "../ButtonPanel/Button";
+import logo from '../../assets/images/tasm-logo-p-500.png';
 
 const SignIn = ({ onClose, onSignUpClick }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  // Refs for input fields to manage focus
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const validateEmail = (email) => {
+    // Simple regex for basic email validation
+    return /\S+@\S+\.\S+/.test(email);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
+
+    if (!email || !validateEmail(email)) {
+      setEmailError("Please enter a valid email.");
+      emailRef.current && emailRef.current.focus();
+      return; // Stop the submission
+    }
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         onClose(); // Close the sign-in component
       })
       .catch((error) => {
-        setError(error.message);
+        if (error.code === "auth/wrong-password") {
+          setPasswordError("Invalid password. Please try again.");
+          passwordRef.current && passwordRef.current.focus();
+        } else if (error.code === "auth/user-not-found") {
+          setEmailError("No user found with this email.");
+          emailRef.current && emailRef.current.focus();
+        } else {
+          setEmailError("Failed to sign in. Please check your credentials and try again.");
+        }
       });
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-full max-w-xs">
-        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="login-email">
-              Email
-            </label>
-            <input
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
-              id="login-email"
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="login-password">
-              Password
-            </label>
-            <input
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-600 sm:leading-6"
-              id="login-password"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
-          <div className="flex items-center justify-between">
-            <Button
-              label="Log In"
-              type="submit"
-              className="btn rounded-r-full pr-1 pl-3 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
-            />
-            <button
-              type="button"
-              className="text-blue-500 hover:text-blue-700 focus:outline-none"
-              onClick={onSignUpClick}
-            >
-              Sign Up
-            </button>
-          </div>
-        </form>
+    <div className=" relative flex justify-center items-center h-screen">
+      <div className="absolute top-0 mt-2">
+        <img src={logo} alt='TASM Logo' className="object-scale-down h-48 m-2" />
       </div>
-    </div>
-  );
-};
-
-export default SignIn;
-/*
-import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
-import Button from "../ButtonPanel/Button";
-
-const SignIn = ({ onClose }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        onClose(); // Close the sign-in component
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  };
-
-  return (
-    <div className="flex justify-center items-center h-screen">
       <div className="w-full max-w-xs">
         <form
+          noValidate
           className="bg-gray shadow-md rounded-lg px-8 py-6 mb-4 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
           onSubmit={handleSubmit}
         >
@@ -112,13 +67,22 @@ const SignIn = ({ onClose }) => {
               Email
             </label>
             <input
+              ref={emailRef}
               className="input"
               id="login-email"
               type="email"
               placeholder="Email"
+              aria-invalid={emailError ? "true" : "false"}
+              aria-labelledby="login-email-label"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
+            {emailError && (
+              <div aria-live="assertive" className="text-red text-xs italic mt-2">
+                <p>Oops! There was a problem:</p>
+                <p>{emailError}</p>
+              </div>
+            )}
           </div>
           <div className="mb-6">
             <label
@@ -128,20 +92,33 @@ const SignIn = ({ onClose }) => {
               Password
             </label>
             <input
+              ref={passwordRef}
               className="input"
               id="login-password"
               type="password"
               placeholder="Password"
+              aria-invalid={passwordError ? "true" : "false"}
+              aria-labelledby="login-password-label"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
+            {passwordError && (
+              <div aria-live="assertive" className="text-xs italic mt-2">
+                <div>{passwordError}</div>
+              </div>
+            )}
           </div>
-          {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between">
             <Button
               label="Log In"
               type="submit"
+              className="btn rounded-xl py-2 px-3 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+            />
+            <Button
+              label="Sign Up"
+              type="button"
               className="btn rounded-xl p-2 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+              onClick={onSignUpClick}
             />
           </div>
         </form>
@@ -151,4 +128,3 @@ const SignIn = ({ onClose }) => {
 };
 
 export default SignIn;
-*/
