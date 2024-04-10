@@ -1,21 +1,35 @@
 import { useState } from 'react';
 import './App.css';
 import './assets/images/tasm-favicon.png';
-import ExhibitForm from './components/EditorView/ExhibitForm.js';
-import Nav from './components/NavBar/nav.js';
-import ListViewComponents from './components/ListViewComponents/ListViewComponents.js';
+import SignIn from './components/SignIn/SignIn.js';
+import Editor from './components/Editor/Editor.js';
+import SignUp from './components/SignUp/SignUp.js';
 
 function App() {
-  const [entry, setEntry] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+
+  const handleCloseSignIn = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleToggleSignUp = () => {
+    setShowSignUp(!showSignUp);
+  };
+
   return (
     <div className="App bg-TASM-bg min-h-screen min-w-screen bg-cover bg-left-bottom bg-no-repeat font-exo2">
-      <Nav selected={entry} setSelected={setEntry}/>
-      {entry ?
-        <ExhibitForm entry={entry}
-          setEntry={setEntry} />
-        :
-        <ListViewComponents entry={entry}
-          setEntry={setEntry} />}
+      {isLoggedIn ? (
+        <Editor />
+      ) : (
+        <>
+          {showSignUp ? (
+            <SignUp onClose={handleToggleSignUp} />
+          ) : (
+            <SignIn onClose={handleCloseSignIn} onSignUpClick={handleToggleSignUp} />
+          )}
+          </>
+      )}
     </div>
   );
 }
