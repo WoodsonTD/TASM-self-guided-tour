@@ -19,32 +19,6 @@ const SignIn = ({ onClose, onSignUpClick }) => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  const validatePassword = (password) => {
-    return {
-      length: password.length >= 8,
-      numberOrSymbol: /[0-9\W]/.test(password),
-      upperAndLowerCase: /[a-z]/.test(password) && /[A-Z]/.test(password),
-    };
-  };
-
-  const generatePasswordErrorMessage = (password) => {
-    const validationResult = validatePassword(password);
-    const messages = {
-      length: "be at least 8 characters long.",
-      numberOrSymbol: "include at least one number or symbol.",
-      upperAndLowerCase: "include both lower and upper case characters.",
-    };
-
-    return Object.keys(validationResult).map((key) => {
-      const isValid = validationResult[key];
-      return (
-        <p key={key} className={isValid ? "validation-check" : "validation-cross"}>
-          {isValid ? "✓" : "✕"} {messages[key]}
-        </p>
-      );
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setEmailError("");
@@ -56,27 +30,19 @@ const SignIn = ({ onClose, onSignUpClick }) => {
       return; // Stop the submission
     }
 
-    // Check if all password validation conditions are true
-    const passwordConditions = validatePassword(password);
-    const allPasswordConditionsMet = Object.values(passwordConditions).every(Boolean);
-
-    if (!password || !allPasswordConditionsMet) {
-      setPasswordError("Password must have 8 characters, a number or special character, and uppercase letter");
-      passwordRef.current && passwordRef.current.focus();
-      return; // Stop the submission
-    }
-
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         onClose(); // Close the sign-in component
       })
       .catch((error) => {
-        if (error.code === "auth/user-not-found") {
+        if (error.code === "auth/wrong-password") {
+          setPasswordError("Invalid password. Please try again.");
+          passwordRef.current && passwordRef.current.focus();
+        } else if (error.code === "auth/user-not-found") {
           setEmailError("No user found with this email.");
           emailRef.current && emailRef.current.focus();
-        } else if (error.code === "auth/wrong-password") {
-          setPasswordError("Wrong password. Please try again.");
-          passwordRef.current && passwordRef.current.focus();
+        } else {
+          setEmailError("Failed to sign in. Please check your credentials and try again.");
         }
       });
   };
@@ -138,8 +104,7 @@ const SignIn = ({ onClose, onSignUpClick }) => {
             />
             {passwordError && (
               <div aria-live="assertive" className="text-xs italic mt-2">
-                <p>Oops! There was a problem with your password:</p>
-                <div>{generatePasswordErrorMessage(password)}</div>
+                <div>{passwordError}</div>
               </div>
             )}
           </div>
