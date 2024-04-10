@@ -1,25 +1,26 @@
 import Button from "../ButtonPanel/Button";
 import { db } from "../../firebase";
 import { doc, deleteDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
-export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order }) {
+export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order, moveUp, moveDown, fetch}) {
   const [displayOrder, setDisplayOrder] = useState(order);
 
-  if (!exhibit) {
-    console.error("ERROR: exhibit is null");
-    return null;
-  }
+  useEffect(() => {
+    setDisplayOrder(order);
+  }, [order]);
+
+
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this exhibit?");
     if (confirmDelete) {
-      // Perform the delete operation here
-      // Still needs to be added
       const superConfirm = window.confirm("Are you really sure you want to delete this exhibit?");
       if (superConfirm) {
         try {
           await deleteDoc(doc(db, "exhibits", exhibit.id));
+          fetch();
+          // Consider calling a method to refresh the exhibit list after deletion
         } catch (error) {
           console.error("ERROR: " + error);
         }
@@ -28,12 +29,12 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
   };
 
   return (
-    <tr className="border-t-8 border-opacity-0 border-darkBlue" key={exhibit.id}>
+    <tr className="border-t-8 border-opacity-0 border-darkBlue">
       <td className="max-w-0 md:w-auto md:max-w-none whitespace-nowrap bg-opacity-15 bg-lightBlue rounded-l-xl">
-        {exhibit.data().title}
+        {exhibit.title}
       </td>
       <td className="text-ellipsis text-center md:text-left bg-opacity-15 bg-lightBlue">
-        {exhibit.data().exhibitID}
+        {exhibit.exhibitID}
       </td>
       <td className="bg-opacity-15 bg-lightBlue">
         <div className="flex justify-center">
@@ -51,14 +52,23 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
           type="number"
           className="orderInput text-black"
           value={displayOrder}
-          onChange={(e) => { handleOrderChange(e, exhibit); }}
+          onChange={(e) => {
+            setDisplayOrder(e.target.value);
+
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleOrderChange(e, exhibit);
+              //deselect the input
+              e.target.blur();
+            }}}
         />
       </td>
       <td className="bg-opacity-15 bg-lightBlue">
         <div className="flex justify-center">
           <Button
-            label="MOVE"
-            onClick={null}
+            label="MOVE UP"
+            onClick={moveUp}
             icon={ChevronUpIcon}
             iconProps={{ className: "w-6 h-6 md:w-5 md:h-5 ml-0 md:ml-1" }}
             iconPosition="right"
@@ -70,8 +80,8 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
       <td className="bg-opacity-15 bg-lightBlue">
         <div className="flex justify-center">
           <Button
-            label="MOVE"
-            onClick={null}
+            label="MOVE DOWN"
+            onClick={moveDown}
             icon={ChevronDownIcon}
             iconProps={{ className: "w-6 h-6 md:w-5 md:h-5 ml-0 md:ml-1" }}
             iconPosition="right"
