@@ -1,13 +1,12 @@
 import { db } from '../../firebase.js';
-import { collection, getDocs, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import ListViewItem from './ListViewItem.js';
 import Button from '../ButtonPanel/Button.js';
 import { writeBatch } from 'firebase/firestore';
 
-export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
+export default function ListViewComponent({ entry, setEntry }) {
   const [exhibitData, setExhibitData] = useState([]);
-  const [isAdding, setIsAdding] = useState(false); // State for adding a new exhibit
 
   const fetchData = async () => {
     try {
@@ -35,6 +34,7 @@ export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
     }
   };
 
+
   const moveDown = async (exhibitId) => {
     const index = exhibitData.findIndex(exhibit => exhibit.id === exhibitId);
     if (index < exhibitData.length - 1) {
@@ -44,62 +44,41 @@ export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
     }
   };
 
+
   const handleAddExhibit = async () => {
     const docRef = await addDoc(collection(db, 'exhibits'), {});
     console.log('Exhibit data saved to Firestore');
     setEntry(docRef.id);
   };
 
-  const handleAddExhibitClick = () => {
-    setIsAdding(true); // Set the state to true to show the form
-    // You would then show the form view where the user can input the new exhibit's data
-  };
-
-  const handleSaveNewExhibit = async (exhibitData) => {
-    // This would be called when the form is submitted, not when 'Add New Exhibit' is clicked
-    // You would save the new exhibit data to Firestore here
-    const docRef = await addDoc(collection(db, 'exhibits'), exhibitData);
-    console.log('Exhibit data saved to Firestore');
-    setEntry(docRef.id);
-    setIsAdding(false); // Set the state back to false to hide the form
-  };
 
   const handleOrderChange = async (event, movedExhibit) => {
     // Parse the new order number from the event target value
     const newOrder = parseInt(event.target.value);
     doOrderChange(movedExhibit, newOrder);
+  };
 
-  }
 
   const doOrderChange = async (movedExhibit, newOrder) => {
     console.log('New order:', newOrder);
-
     // Exit the function if the new order is the same as the current order
     if (newOrder === movedExhibit.order) {
-
       return;
     }
-
     // Create a reference to the moved exhibit's document
     const movedDocRef = doc(db, 'exhibits', movedExhibit.id);
-
     // Get all exhibit documents from Firestore
     const querySnapshot = await getDocs(collection(db, 'exhibits'));
-
     // Find if any exhibit is already at the newOrder position
     const displacedExhibit = querySnapshot.docs.find(doc => doc.data().order === newOrder);
-
     // Start a batch to perform both updates together
     const batch = writeBatch(db);
-
     // Update the moved exhibit's order
     batch.update(movedDocRef, { order: newOrder });
-
     // If there is a displaced exhibit, update its order to the moved exhibit's current order
     if (displacedExhibit) {
       batch.update(displacedExhibit.ref, { order: movedExhibit.order });
     }
-
     // Commit the batch
     await batch.commit();
     if (fetchData) {
@@ -109,7 +88,6 @@ export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
 
   const validateOrder = async (sortedData) => {
     // Start a batch to perform both updates together
-
     if (sortedData) {
       const batch = writeBatch(db);
       console.log('sortedData:', sortedData);
@@ -137,7 +115,6 @@ export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
             const curDocRef = doc(db, 'exhibits', exhibit.id) || null;
             batch.update(curDocRef, { next: null });
           }
-
         } else {
           batch.update(curDocRef, {next: null, prev: null})
         }
@@ -206,9 +183,6 @@ export default function ListViewComponent({ entry, setEntry, isAddingNew }) {
           />
           <div className='flex justify-center mt-6'>
           </div>
-          {isAddingNew && (
-            <div>Placeholder</div>
-          )}
         </div>
         );
       </div>
