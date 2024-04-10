@@ -46,10 +46,10 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
         </div>
       </td>
       {/* <td>HIDE</td> */}
-      <td className="hidden md:table-cell bg-opacity-15 bg-lightBlue">
+      <td className="hidden md:w-16 md:table-cell bg-opacity-15 bg-lightBlue">
         <input
           type="number"
-          className="input w-12 text-black"
+          className="orderInput text-black"
           value={displayOrder}
           onChange={(e) => { handleOrderChange(e, exhibit); }}
         />
