@@ -1,11 +1,15 @@
 import Button from "../ButtonPanel/Button";
 import { db } from "../../firebase";
 import { doc, deleteDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
-export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order, moveUp, moveDown }) {
+export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order, moveUp, moveDown, fetch}) {
   const [displayOrder, setDisplayOrder] = useState(order);
+
+  useEffect(() => {
+    setDisplayOrder(order);
+  }, [order]);
 
 
   const handleDelete = async () => {
@@ -15,6 +19,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
       if (superConfirm) {
         try {
           await deleteDoc(doc(db, "exhibits", exhibit.id));
+          fetch();
           // Consider calling a method to refresh the exhibit list after deletion
         } catch (error) {
           console.error("ERROR: " + error);
@@ -48,7 +53,16 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
           type="number"
           className="input w-12"
           value={displayOrder}
-          onChange={(e) => { handleOrderChange(e, exhibit); }}
+          onChange={(e) => {
+            setDisplayOrder(e.target.value);
+
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleOrderChange(e, exhibit);
+              //deselect the input
+              e.target.blur();
+            }}}
         />
 
       </td>
