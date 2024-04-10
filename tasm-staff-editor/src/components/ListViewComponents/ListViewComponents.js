@@ -60,7 +60,6 @@ export default function ListViewComponent({ entry, setEntry }) {
 
 
   const doOrderChange = async (movedExhibit, newOrder) => {
-    console.log('New order:', newOrder);
     // Exit the function if the new order is the same as the current order
     if (newOrder === movedExhibit.order) {
       return;
@@ -90,8 +89,6 @@ export default function ListViewComponent({ entry, setEntry }) {
     // Start a batch to perform both updates together
     if (sortedData) {
       const batch = writeBatch(db);
-      console.log('sortedData:', sortedData);
-
       for (let exhibit of sortedData) {
         const curIndex = sortedData.findIndex((ex) => ex.id === exhibit.id);
         const curDocRef = doc(db, 'exhibits', exhibit.id) || null;
@@ -102,8 +99,6 @@ export default function ListViewComponent({ entry, setEntry }) {
 
             const nextID = nextExhibit.exhibitID;
             const curID = exhibit.exhibitID;
-            console.log("nextID", nextID);
-            console.log("curID", curID);
             // Update the moved exhibit's order
             if (nextID) {
               batch.update(curDocRef, { next: nextExhibit.exhibitID });
