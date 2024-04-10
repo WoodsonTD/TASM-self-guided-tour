@@ -21,10 +21,10 @@ const SignIn = ({ onClose, onSignUpClick }) => {
 
   const validatePassword = (password) => {
     return {
-          length: password.length >= 8,
-          numberOrSymbol: /[0-9\W]/.test(password),
-          upperAndLowerCase: /[a-z]/.test(password) && /[A-Z]/.test(password),
-        };
+      length: password.length >= 8,
+      numberOrSymbol: /[0-9\W]/.test(password),
+      upperAndLowerCase: /[a-z]/.test(password) && /[A-Z]/.test(password),
+    };
   };
 
   const generatePasswordErrorMessage = (password) => {
