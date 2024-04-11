@@ -7,7 +7,7 @@ import MediaType from './MediaType.js';
 import ExhibitContent from './ExhibitContent.js';
 import ReadingLinks from './ReadingLinks.js';
 import Button from '../ButtonPanel/Button.js';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 
 function ExhibitForm({ entry, setEntry, handleDelete }) {
@@ -168,7 +168,7 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
           onAddArticleLink={handleAddArticleLink}
           onRemoveArticleLink={handleRemoveArticleLink}
         />
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-evenly mt-6">
           {formError && <div className="text-red-500 text-sm">{formError}</div>}
           <Button
             label="Submit"
@@ -182,6 +182,9 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
           {/* Cancel Button */}
           <Button
             label="Cancel"
+            icon={XMarkIcon}
+            iconProps={{ className: "w-7 h-7" }}
+            iconPosition="left"
             className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
             onClick={() => {
               // Clear form fields
