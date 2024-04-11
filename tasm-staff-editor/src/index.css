@@ -4,5 +4,65 @@
 @tailwind utilities;
 
 .btn {
-    @apply bg-red text-white font-exo2 flex items-center justify-center cursor-pointer
-  }
+  @apply bg-red text-white font-exo2 flex items-center justify-center cursor-pointer
+  hover:bg-lightRed hover:-translate-y-0.5 transform transition focus:outline-none
+  focus:ring-2 focus:ring-inset focus:ring-white focus:ring-opacity-75 active:bg-notAsDarkRed
+}
+
+.btn_nav {
+  @apply bg-darkRed text-white font-exo2 flex items-center justify-center cursor-pointer rounded-br-lg
+  hover:bg-lightRed hover:translate-y-0.5 transform transition focus:outline-none
+  focus:ring-2 focus:ring-inset focus:ring-white focus:ring-opacity-75 active:bg-notAsDarkRed
+}
+
+.nav {
+  @apply bg-darkRed text-white py-2 px-4 inline-block rounded-bl-lg
+  hover:bg-lightRed hover:translate-y-0.5 transform transition focus:outline-none
+  focus:ring-2 focus:ring-inset focus:ring-white focus:ring-opacity-75 active:bg-notAsDarkRed
+}
+
+.listView th {
+  @apply pt-2 pl-3 pr-3
+}
+
+.listView td {
+  @apply p-2 truncate
+}
+
+.input {
+  @apply w-full px-2 py-1.5 rounded-md border-0 shadow-lg sm:leading-6
+  focus:outline-none focus:ring-2 focus:ring-red focus:ring-inset focus:shadow-inner placeholder:italic
+}
+
+.dropdown {
+  @apply text-darkBlue rounded-md mt-1 border-0 px-2 py-1.5 shadow-lg
+  focus:outline-none focus:ring-2 focus:ring-red focus:ring-inset focus:shadow-inner
+}
+
+.file-btn {
+  @apply file:text-base file:border-none file:rounded-full
+  file:px-3 file:py-1 file:mr-5 file:m-5  file:cursor-pointer file:bg-red file:text-white
+  file:shadow-lg file:shadow-red/50 file:hover:bg-lightRed file:hover:-translate-y-0.5 file:transform file:active:bg-notAsDarkRed
+}
+
+.qrContainer {
+  @apply flex flex-col md:flex-row justify-between items-center md:space-x-4 mb-4
+  border-none bg-gray rounded-3xl p-4 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]
+}
+
+.imageLink {
+  @apply text-darkBlue hover:underline drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] hover:text-lightBlue hover:translate-y-0.5 transform transition
+}
+
+.orderInput {
+  @apply w-full px-2 py-1 rounded-md border-0 shadow-lg sm:leading-6
+  focus:outline-none focus:ring-2 focus:ring-red focus:ring-inset focus:shadow-inner placeholder:italic
+}
+
+.validation-check {
+  @apply text-green;
+}
+
+.validation-cross {
+  @apply text-red;
+}
