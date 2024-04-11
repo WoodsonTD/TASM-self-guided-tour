@@ -10,9 +10,10 @@ export default function ExhibitContent({ content, onChange }) {
           id="content"
           name="content"
           onChange={onChange}
-          rows={3}
+          rows={4}
           className="input mb-6"
           value={content}
+          style={{ minHeight: '48px', maxHeight: '168px' }}
         />
       </div>
     </div>
