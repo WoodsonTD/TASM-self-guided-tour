@@ -11,7 +11,7 @@ function QRCodeComponent({ value, exhibitID }) {
     const canvas = await html2canvas(qrCodeRef.current);
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF();
-    pdf.addImage(imgData, 'PNG', 0, 0);
+    pdf.addImage(imgData, 'PNG', 10, 10);
     pdf.save('QRCode.pdf');
   };
 
