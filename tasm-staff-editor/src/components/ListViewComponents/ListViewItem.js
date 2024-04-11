@@ -67,7 +67,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
       <td className="bg-opacity-15 bg-lightBlue">
         <div className="flex justify-center">
           <Button
-            label="MOVE UP"
+            label="MOVE"
             onClick={moveUp}
             icon={ChevronUpIcon}
             iconProps={{ className: "w-6 h-6 md:w-5 md:h-5 ml-0 md:ml-1" }}
@@ -80,7 +80,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
       <td className="bg-opacity-15 bg-lightBlue">
         <div className="flex justify-center">
           <Button
-            label="MOVE DOWN"
+            label="MOVE"
             onClick={moveDown}
             icon={ChevronDownIcon}
             iconProps={{ className: "w-6 h-6 md:w-5 md:h-5 ml-0 md:ml-1" }}

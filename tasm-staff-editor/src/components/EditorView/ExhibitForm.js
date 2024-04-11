@@ -7,14 +7,13 @@ import MediaType from './MediaType.js';
 import ExhibitContent from './ExhibitContent.js';
 import ReadingLinks from './ReadingLinks.js';
 import Button from '../ButtonPanel/Button.js';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 
 function ExhibitForm({ entry, setEntry, handleDelete }) {
   const [title, setTitle] = useState('');
   const [mediaType, setMediaType] = useState('image');
   const [mediaLink, setMediaLink] = useState('');
-  const [audioLink, setAudioLink] = useState('');
   const [content, setContent] = useState('');
   const [articleLink, setArticleLink] = useState([{ title: '', link: '' }]);
   const [qrCodeValue, setQrCodeValue] = useState('');
@@ -35,7 +34,6 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
         setTitle(docSnap.title);
         setMediaType(docSnap.mediaType || 'image');
         setMediaLink(docSnap.mediaLink);
-        setAudioLink(docSnap.audioLink);
         setContent(docSnap.content);
         setArticleLink(docSnap.articleLink || [{ title: '', link: '' }]);
         setExhibitID(docSnap.exhibitID || // Generate a unique 4-digit code
@@ -76,9 +74,6 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
           break;
         case 'mediaLink':
           setMediaLink(value);
-          break;
-        case 'audioLink':
-          setAudioLink(value);
           break;
         case 'content':
           setContent(value);
@@ -132,17 +127,17 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
       setQrCodeValue(qrCodeValue);
       const exhibitData = {
         title,
-        mediaType,
-        mediaLink,
-        audioLink,
+        mediaType: mediaType || 'none',
+        mediaLink: mediaLink || '',
         content,
         articleLink,
         exhibitID,
         qrCodeValue,
       };
+     
       // Update the exhibit data in Firestore with the 4-digit code
       await updateDoc(docRef, exhibitData);
-
+      alert('Exhibit data saved successfully!');
     } catch (error) {
       console.error('Error saving exhibit data:', error);
     }
@@ -168,7 +163,7 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
           onAddArticleLink={handleAddArticleLink}
           onRemoveArticleLink={handleRemoveArticleLink}
         />
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-evenly mt-6">
           {formError && <div className="text-red-500 text-sm">{formError}</div>}
           <Button
             label="Submit"
@@ -182,13 +177,15 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
           {/* Cancel Button */}
           <Button
             label="Cancel"
+            icon={XMarkIcon}
+            iconProps={{ className: "w-7 h-7" }}
+            iconPosition="left"
             className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
             onClick={() => {
               // Clear form fields
               setTitle('');
               setMediaType('image');
               setMediaLink('');
-              setAudioLink('');
               setContent('');
               setArticleLink([{ title: '', link: '' }]);
               setExhibitID('');
