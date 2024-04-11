@@ -90,12 +90,17 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
 
 export function FurtherReading({ articleLink }) {
   return (
-    <div className="flex flex-col justify-center">
-      <h2 className="text-5xl text-black text-center">Further Reading</h2>
-      <ul className='text-center list-disc' >
+    <div className="flex flex-col items-center justify-center">
+      <h2 className="text-5xl text-black mb-4">Further Reading</h2>
+      <ul className='list-disc text-lg'>
         {articleLink.map((item, index) => (
-          <li key={index}>
-            <a target="blank" href={item.link}>
+          <li key={index} className='hover:-translate-y-0.5 transform transition'>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={item.link}
+              className="link-underline"
+            >
               {item.title}
             </a>
           </li>
