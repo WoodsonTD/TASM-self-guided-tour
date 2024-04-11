@@ -14,3 +14,15 @@
 .speakerIcon {
   @apply w-9 h-9 text-black hover:text-white transition-colors duration-300 ease-in
 }
+
+/* Define a custom class for your link */
+.link-underline {
+  @apply underline decoration-solid text-black hover:text-lightBlue;
+  text-decoration-thickness: 2px; /* Make the underline thicker */
+  text-underline-offset: 3px; /* Adjust the offset to your liking */
+}
+
+/* Define a custom class for hover state to change underline color */
+.link-underline:hover {
+  @apply decoration-lightBlue;
+}
