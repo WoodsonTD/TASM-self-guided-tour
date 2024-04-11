@@ -73,6 +73,8 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
     default:
       media = null;
   }
+
+
   return (
     <div className="">
       <ExhibitTitle title={exhibit.title} bodyText={exhibit.content} />
@@ -82,7 +84,7 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
       >
         {exhibit.content}
       </p>
-      {exhibit.articleLink ? <FurtherReading articleLink={exhibit.articleLink} /> : null}
+      {(exhibit.articleLink && !(exhibit.articleLink[0].link === "" || exhibit.articleLink[0].title === "")) ? <FurtherReading articleLink={exhibit.articleLink} /> : null}
       <ButtonPanel setExhibitID={setExhibitID} nextExhibit={exhibit.next} prevExhibit={exhibit.prev} />
     </div>
   );
