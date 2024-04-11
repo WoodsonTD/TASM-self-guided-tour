@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { query, where, getDocs, collection } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { logEvent } from 'firebase/analytics';
 import ExhibitTitle from '../ExhibitTitle/ExhibitTitle';
 import ModelView from '../AFrame/ModelView';
 import VideoView from '../VideoView/VideoView';
@@ -11,6 +12,7 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
   const [exhibit, setExhibit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [prevTimestamp, setPrevTimestamp] = useState(null);
 
   const errorStyle = 'md:w-2/3 m-auto text-center';
 
@@ -20,6 +22,7 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
       setLoading(true);
       setExhibit(null);
       try {
+        setLoading(true);
         const queryResults = query(collection(db, 'exhibits'), where('exhibitID', '==', exhibitID));
         const exhibitResults = await getDocs(queryResults);
         if (!exhibitResults.empty) {
@@ -37,7 +40,15 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
         setError("Failed to fetch exhibit data.\n" + error);
         setLoading(false);
       }
-    };
+
+      const currentTimestamp = Date.now();
+      if (prevTimestamp) {
+        const dwellTime = currentTimestamp - prevTimestamp;
+        logEvent(db, exhibit.exhibitTitle, { dwellTime });
+      }
+      setPrevTimestamp(currentTimestamp);
+      logEvent(db, 'exhibit_scanned', { exhibitID, timestamp: currentTimestamp });
+    }
 
     fetchData();
   }, [exhibitID]);
