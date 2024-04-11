@@ -132,14 +132,14 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
       setQrCodeValue(qrCodeValue);
       const exhibitData = {
         title,
-        mediaType,
-        mediaLink,
-        audioLink,
+        mediaType: mediaType || 'none',
+        mediaLink: mediaLink || '',
         content,
         articleLink,
         exhibitID,
         qrCodeValue,
       };
+     
       // Update the exhibit data in Firestore with the 4-digit code
       await updateDoc(docRef, exhibitData);
 
