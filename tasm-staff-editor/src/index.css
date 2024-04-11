@@ -58,3 +58,11 @@
   @apply w-full px-2 py-1 rounded-md border-0 shadow-lg sm:leading-6
   focus:outline-none focus:ring-2 focus:ring-red focus:ring-inset focus:shadow-inner placeholder:italic
 }
+
+.validation-check {
+  @apply text-green;
+}
+
+.validation-cross {
+  @apply text-red;
+}

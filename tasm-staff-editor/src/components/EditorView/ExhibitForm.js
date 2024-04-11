@@ -7,19 +7,20 @@ import MediaType from './MediaType.js';
 import ExhibitContent from './ExhibitContent.js';
 import ReadingLinks from './ReadingLinks.js';
 import Button from '../ButtonPanel/Button.js';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 
-function ExhibitForm({ entry, setEntry }) {
+function ExhibitForm({ entry, setEntry, handleDelete }) {
   const [title, setTitle] = useState('');
-  // const [id, setId] = useState('');
   const [mediaType, setMediaType] = useState('image');
   const [mediaLink, setMediaLink] = useState('');
-  const [audioLink, setAudioLink] = useState('');
   const [content, setContent] = useState('');
   const [articleLink, setArticleLink] = useState([{ title: '', link: '' }]);
   const [qrCodeValue, setQrCodeValue] = useState('');
   const [exhibitID, setExhibitID] = useState('');
+  const [isAddingNew, setIsAddingNew] = useState(false); // State for adding a new exhibit
+  const [formError, setFormError] = useState('');
+
 
   // The document reference for the exhibit
   const [docRef, setDocRef] = useState(null);
@@ -33,7 +34,6 @@ function ExhibitForm({ entry, setEntry }) {
         setTitle(docSnap.title);
         setMediaType(docSnap.mediaType || 'image');
         setMediaLink(docSnap.mediaLink);
-        setAudioLink(docSnap.audioLink);
         setContent(docSnap.content);
         setArticleLink(docSnap.articleLink || [{ title: '', link: '' }]);
         setExhibitID(docSnap.exhibitID || // Generate a unique 4-digit code
@@ -51,14 +51,19 @@ function ExhibitForm({ entry, setEntry }) {
     , [entry]);
 
   useEffect(() => {
-    const qrCodeValue = `https://10.8.202.70:3006/?exhibitID=${exhibitID}`;
+    const qrCodeValue = `https://tasm-tour.web.app/?exhibitID=${exhibitID}`;
     setQrCodeValue(qrCodeValue);
   }, [exhibitID]);
 
 
   const handleChange = (event) => {
+    const { name, value, type } = event.target;
 
-    const { name, value } = event.target;
+    // Auto-resize textarea if the input is 'content' textarea
+    if (type === 'textarea' && name === 'content') {
+      event.target.style.height = 'auto'; // Reset the height
+      event.target.style.height = `${event.target.scrollHeight}px`; // Set the new height based on content
+    }
 
     if (name === 'articleLink') {
       // Directly use the value from the event since it's already the updated array
@@ -74,9 +79,6 @@ function ExhibitForm({ entry, setEntry }) {
           break;
         case 'mediaLink':
           setMediaLink(value);
-          break;
-        case 'audioLink':
-          setAudioLink(value);
           break;
         case 'content':
           setContent(value);
@@ -102,26 +104,45 @@ function ExhibitForm({ entry, setEntry }) {
     }
   };
 
+  const validateForm = () => {
+    let errorMessage = "";
+
+    if (!title || !title.trim()) {
+      errorMessage += "Title is required.\n";
+    }
+    if (!content || !content.trim()) {
+      errorMessage += "Content is required.\n";
+    }
+
+    setFormError(errorMessage); // Set the composed error message
+    return !errorMessage; // If there is an error message, return false
+  };
+
   const handleSubmit = async (event) => {
 
     event.preventDefault();
+    // Call the validateForm function and stop submission if any checks fail
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       // Generate the URL or identifier for the QR code
-      const qrCodeValue = `http://localhost:3001/?exhibitID=${exhibitID}`;
+      const qrCodeValue = `https://tasm-tour.web.app/?exhibitID=${exhibitID}`;
       setQrCodeValue(qrCodeValue);
       const exhibitData = {
         title,
-        mediaType,
-        mediaLink,
-        audioLink,
+        mediaType: mediaType || 'none',
+        mediaLink: mediaLink || '',
         content,
         articleLink,
         exhibitID,
         qrCodeValue,
       };
+
       // Update the exhibit data in Firestore with the 4-digit code
       await updateDoc(docRef, exhibitData);
-
+      alert('Exhibit data saved successfully!');
     } catch (error) {
       console.error('Error saving exhibit data:', error);
     }
@@ -147,14 +168,40 @@ function ExhibitForm({ entry, setEntry }) {
           onAddArticleLink={handleAddArticleLink}
           onRemoveArticleLink={handleRemoveArticleLink}
         />
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-evenly mt-6">
+          {formError && <div className="text-red-500 text-sm">{formError}</div>}
           <Button
             label="Submit"
+            type='submit'
             onClick={handleSubmit}
             icon={CheckIcon}
             iconProps={{ className: "w-7 h-7" }}
             iconPosition="left"
             className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+          />
+          {/* Cancel Button */}
+          <Button
+            label="Cancel"
+            icon={XMarkIcon}
+            iconProps={{ className: "w-7 h-7" }}
+            iconPosition="left"
+            className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+            onClick={() => {
+              // Clear form fields
+              setTitle('');
+              setMediaType('image');
+              setMediaLink('');
+              setContent('');
+              setArticleLink([{ title: '', link: '' }]);
+              setExhibitID('');
+              // If we're adding a new exhibit and decide to cancel, handle deletion if needed
+              if (isAddingNew && entry) {
+                handleDelete(entry);
+              }
+              // Update the state to no longer be adding a new exhibit
+              setEntry(null);
+              setIsAddingNew(false); // This should be passed down from the parent if it's a shared state
+            }}
           />
         </div>
       </form>
