@@ -14,7 +14,6 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
   const [title, setTitle] = useState('');
   const [mediaType, setMediaType] = useState('image');
   const [mediaLink, setMediaLink] = useState('');
-  const [audioLink, setAudioLink] = useState('');
   const [content, setContent] = useState('');
   const [articleLink, setArticleLink] = useState([{ title: '', link: '' }]);
   const [qrCodeValue, setQrCodeValue] = useState('');
@@ -35,7 +34,6 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
         setTitle(docSnap.title);
         setMediaType(docSnap.mediaType || 'image');
         setMediaLink(docSnap.mediaLink);
-        setAudioLink(docSnap.audioLink);
         setContent(docSnap.content);
         setArticleLink(docSnap.articleLink || [{ title: '', link: '' }]);
         setExhibitID(docSnap.exhibitID || // Generate a unique 4-digit code
@@ -76,9 +74,6 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
           break;
         case 'mediaLink':
           setMediaLink(value);
-          break;
-        case 'audioLink':
-          setAudioLink(value);
           break;
         case 'content':
           setContent(value);
@@ -132,14 +127,14 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
       setQrCodeValue(qrCodeValue);
       const exhibitData = {
         title,
-        mediaType,
-        mediaLink,
-        audioLink,
+        mediaType: mediaType || 'none',
+        mediaLink: mediaLink || '',
         content,
         articleLink,
         exhibitID,
         qrCodeValue,
       };
+     
       // Update the exhibit data in Firestore with the 4-digit code
       await updateDoc(docRef, exhibitData);
 
@@ -188,7 +183,6 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
               setTitle('');
               setMediaType('image');
               setMediaLink('');
-              setAudioLink('');
               setContent('');
               setArticleLink([{ title: '', link: '' }]);
               setExhibitID('');
