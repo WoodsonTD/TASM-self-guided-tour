@@ -137,7 +137,7 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
      
       // Update the exhibit data in Firestore with the 4-digit code
       await updateDoc(docRef, exhibitData);
-
+      alert('Exhibit data saved successfully!');
     } catch (error) {
       console.error('Error saving exhibit data:', error);
     }
