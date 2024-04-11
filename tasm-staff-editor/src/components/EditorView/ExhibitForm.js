@@ -148,23 +148,6 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
     }
   };
 
-  // When resetting the form, clear all fields and generate a new exhibit ID
-  const handleReset = () => {
-    setTitle('');
-    setMediaType('image');
-    setMediaLink('');
-    setAudioLink('');
-    setContent('');
-    setArticleLink([{ title: '', link: '' }]);
-    setExhibitID(Math.floor(1000 + Math.random() * 9000).toString());
-  };
-
-  // When adding a new exhibit, call this function to reset the form and set the state
-  const handleAddNewExhibit = () => {
-    handleReset();
-    setIsAddingNew(true);
-  };
-
   return (
     <div className='flex flex-col items-center justify-center text-lg'>
       <h1 className="text-2xl text-white">Exhibit Form</h1>

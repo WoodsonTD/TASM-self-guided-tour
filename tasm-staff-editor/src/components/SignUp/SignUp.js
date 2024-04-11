@@ -3,8 +3,9 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import Button from "../ButtonPanel/Button";
 import logo from '../../assets/images/tasm-logo-p-500.png';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
-const SignUp = ({ onClose }) => {
+const SignUp = ({ onClose, onSignInClick }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -158,7 +159,16 @@ const SignUp = ({ onClose }) => {
               </div>
             )}
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <Button
+                label="Log In"
+                type="button"
+                icon={ChevronLeftIcon}
+                iconProps={{ className: "w-6 h-6" }}
+                iconPosition="left"
+                className="btn rounded-xl py-2 pl-0.5 pr-3 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+                onClick={onSignInClick}
+              />
             <Button
               label="Sign Up"
               type="submit"

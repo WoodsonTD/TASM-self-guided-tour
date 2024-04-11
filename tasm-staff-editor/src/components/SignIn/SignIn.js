@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import Button from "../ButtonPanel/Button";
 import logo from '../../assets/images/tasm-logo-p-500.png';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
 
 const SignIn = ({ onClose, onSignUpClick }) => {
   const [email, setEmail] = useState("");
@@ -32,6 +33,7 @@ const SignIn = ({ onClose, onSignUpClick }) => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        console.log(userCredential);
         onClose(); // Close the sign-in component
       })
       .catch((error) => {
@@ -117,7 +119,10 @@ const SignIn = ({ onClose, onSignUpClick }) => {
             <Button
               label="Sign Up"
               type="button"
-              className="btn rounded-xl p-2 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+              icon={ChevronRightIcon}
+              iconProps={{ className: "w-6 h-6" }}
+              iconPosition="right"
+              className="btn rounded-xl py-2 pl-3 pr-0.5 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
               onClick={onSignUpClick}
             />
           </div>

@@ -7,28 +7,24 @@ import SignUp from './components/SignUp/SignUp.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [activeForm, setActiveForm] = useState('signIn');
 
   const handleCloseSignIn = () => {
     setIsLoggedIn(true);
   };
 
-  const handleToggleSignUp = () => {
-    setShowSignUp(!showSignUp);
+  const handleToggleForm = () => {
+    setActiveForm(prevForm => prevForm === 'signIn' ? 'signUp' : 'signIn');
   };
 
   return (
     <div className="App bg-TASM-bg min-h-screen min-w-screen bg-cover bg-left-bottom bg-no-repeat font-exo2">
       {isLoggedIn ? (
         <Editor />
+      ) : activeForm === 'signUp' ? (
+        <SignUp onClose={handleToggleForm} onSignInClick={handleToggleForm} />
       ) : (
-        <>
-          {showSignUp ? (
-            <SignUp onClose={handleToggleSignUp} />
-          ) : (
-            <SignIn onClose={handleCloseSignIn} onSignUpClick={handleToggleSignUp} />
-          )}
-          </>
+        <SignIn onClose={handleCloseSignIn} onSignUpClick={handleToggleForm} />
       )}
     </div>
   );
