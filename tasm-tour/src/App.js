@@ -6,7 +6,7 @@ import './App.css';
 
 function App() {
   const searchParams = new URLSearchParams(window.location.search);
-  const [exhibitID, setExhibitID] = useState(searchParams.get('exhibitID') || 'test');
+  const [exhibitID, setExhibitID] = useState(searchParams.get('exhibitID') || 'home');
 
   return (
     <div className="bg-gray min-h-screen ld-h-screen bg-h-screen font-exo2">
