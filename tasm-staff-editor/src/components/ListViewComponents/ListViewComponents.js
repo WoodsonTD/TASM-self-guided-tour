@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ListViewItem from './ListViewItem.js';
 import Button from '../ButtonPanel/Button.js';
 import { writeBatch } from 'firebase/firestore';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 export default function ListViewComponent({ entry, setEntry }) {
   const [exhibitData, setExhibitData] = useState([]);
@@ -173,13 +174,14 @@ export default function ListViewComponent({ entry, setEntry }) {
           <Button
             label="Add New Exhibit"
             onClick={() => handleAddExhibit()}
-            icon={null}
+            icon={PlusIcon}
+            iconProps={{ className: "w-7 h-7" }}
+            iconPosition="left"
             className="btn rounded-full pl-3 pr-4 py-1 text-xl drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)] mb-10"
           />
           <div className='flex justify-center mt-6'>
           </div>
         </div>
-        );
       </div>
     </div>
   );
