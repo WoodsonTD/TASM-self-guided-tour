@@ -4,6 +4,10 @@ import Button from '../ButtonPanel/Button';
 export default function ExhibitTitle({ title, bodyText }) {
   const handleTextToSpeech = () => {
     const { speechSynthesis } = window;
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+      return;
+    }
     const speech = new SpeechSynthesisUtterance(title + " . . . " + bodyText);
     speechSynthesis.speak(speech);
   };
