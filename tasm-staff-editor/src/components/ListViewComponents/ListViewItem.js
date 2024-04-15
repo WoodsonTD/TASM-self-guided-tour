@@ -13,8 +13,6 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
 
 
   const handleDelete = async () => {
-    const demoWindow = window.alert("This is a demo version. You cannot delete exhibits.");
-    return;
     const confirmDelete = window.confirm("Are you sure you want to delete this exhibit?");
     if (confirmDelete) {
       const superConfirm = window.confirm("Are you really sure you want to delete this exhibit?");
