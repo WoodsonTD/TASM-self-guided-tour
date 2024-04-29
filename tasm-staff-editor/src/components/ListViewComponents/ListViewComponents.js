@@ -6,6 +6,13 @@ import Button from '../ButtonPanel/Button.js';
 import { writeBatch } from 'firebase/firestore';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
+
+/**
+ * 
+ * @param {*} entry Value of the current exhibit being edited
+ * @param {*} setEntry Function to set the entry in the parent component, used to open the edit form 
+ * @returns ListViewComponent, a list of all exhibits in the database
+ */
 export default function ListViewComponent({ entry, setEntry }) {
   const [exhibitData, setExhibitData] = useState([]);
 
@@ -159,6 +166,7 @@ export default function ListViewComponent({ entry, setEntry }) {
             {exhibitData.sort(sortExhibits).map((exhibit, key) => (
               <ListViewItem
                 key={key}
+                index={key}
                 exhibit={exhibit}
                 setEntry={setEntry}
                 handleOrderChange={handleOrderChange}

@@ -57,8 +57,13 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
 
 
   const handleChange = (event) => {
+    const { name, value, type } = event.target;
 
-    const { name, value } = event.target;
+    // Auto-resize textarea if the input is 'content' textarea
+    if (type === 'textarea' && name === 'content') {
+      event.target.style.height = 'auto'; // Reset the height
+      event.target.style.height = `${event.target.scrollHeight}px`; // Set the new height based on content
+    }
 
     if (name === 'articleLink') {
       // Directly use the value from the event since it's already the updated array
@@ -134,7 +139,7 @@ function ExhibitForm({ entry, setEntry, handleDelete }) {
         exhibitID,
         qrCodeValue,
       };
-     
+
       // Update the exhibit data in Firestore with the 4-digit code
       await updateDoc(docRef, exhibitData);
       alert('Exhibit data saved successfully!');

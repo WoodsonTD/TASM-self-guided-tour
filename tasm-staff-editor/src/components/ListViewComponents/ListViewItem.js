@@ -4,7 +4,20 @@ import { doc, deleteDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
-export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order, moveUp, moveDown, fetch}) {
+
+/**
+ * 
+ * @param {*} exhibit Exhibit doc object from firestore, contains exhibit data
+ * @param {*} setEntry Function to set the entry in the parent component, used to open the edit form
+ * @param {*} handleOrderChange Function to handle order change
+ * @param {*} order Order value to determine order of the exhibit in the list
+ * @param {*} moveUp Function to move the exhibit up in the list
+ * @param {*} moveDown Function to move the exhibit down in the list
+ * @param {*} fetch Function to fetch the exhibits from firestore, refreshes the list
+ * @param {*} index key value of item in list, used for alternating row colors
+ * @returns ListViewItem, a row in the list of exhibits
+ */
+export default function ListViewItem({ exhibit, setEntry, handleOrderChange, order, moveUp, moveDown, fetch, index}) {
   const [displayOrder, setDisplayOrder] = useState(order);
 
   useEffect(() => {
@@ -20,7 +33,6 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
         try {
           await deleteDoc(doc(db, "exhibits", exhibit.id));
           fetch();
-          // Consider calling a method to refresh the exhibit list after deletion
         } catch (error) {
           console.error("ERROR: " + error);
         }
@@ -28,15 +40,17 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
     }
   };
 
+  const bgOpacity = order < 0 ? "bg-opacity-0":(index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-35");
+
   return (
-    <tr className="border-t-8 border-opacity-0 border-darkBlue">
-      <td className="max-w-0 md:w-auto md:max-w-none whitespace-nowrap bg-opacity-15 bg-lightBlue rounded-l-xl">
+    <tr className="border-t-8 border-darkBlue ">
+      <td className={"max-w-0 md:w-auto md:max-w-none whitespace-nowrap bg-lightBlue rounded-l-xl " + bgOpacity}>
         {exhibit.title}
       </td>
-      <td className="text-ellipsis text-center md:text-left bg-opacity-15 bg-lightBlue">
+      <td className={"text-ellipsis text-center md:text-left bg-lightBlue " + bgOpacity}>
         {exhibit.exhibitID}
       </td>
-      <td className="bg-opacity-15 bg-lightBlue">
+      <td className={"bg-lightBlue "+ bgOpacity}>
         <div className="flex justify-center">
           <Button
             label="EDIT"
@@ -47,7 +61,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
         </div>
       </td>
       {/* <td>HIDE</td> */}
-      <td className="hidden md:w-16 md:table-cell bg-opacity-15 bg-lightBlue">
+      <td className={"hidden md:w-16 md:table-cell bg-lightBlue "+ bgOpacity}>
         <input
           type="number"
           className="orderInput text-black"
@@ -64,7 +78,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
             }}}
         />
       </td>
-      <td className="bg-opacity-15 bg-lightBlue">
+      <td className={"bg-lightBlue "+ bgOpacity}>
         <div className="flex justify-center">
           <Button
             label="MOVE"
@@ -77,7 +91,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
           />
         </div>
       </td>
-      <td className="bg-opacity-15 bg-lightBlue">
+      <td className={"bg-lightBlue "+ bgOpacity}>
         <div className="flex justify-center">
           <Button
             label="MOVE"
@@ -90,7 +104,7 @@ export default function ListViewItem({ exhibit, setEntry, handleOrderChange, ord
           />
         </div>
       </td>
-      <td className="hidden sm:table-cell bg-opacity-15 bg-lightBlue rounded-r-xl">
+      <td className={"hidden sm:table-cell bg-lightBlue rounded-r-xl "+ bgOpacity}>
         <div className="flex justify-center">
           <Button
             label="DELETE"
