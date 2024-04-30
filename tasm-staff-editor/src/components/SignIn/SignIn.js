@@ -3,13 +3,14 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import Button from "../ButtonPanel/Button";
 import logo from '../../assets/images/tasm-logo-p-500.png';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronRightIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const SignIn = ({ onClose, onSignUpClick }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // Refs for input fields to manage focus
   const emailRef = useRef(null);
@@ -47,6 +48,10 @@ const SignIn = ({ onClose, onSignUpClick }) => {
           setEmailError("Failed to sign in. Please check your credentials and try again.");
         }
       });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -93,17 +98,27 @@ const SignIn = ({ onClose, onSignUpClick }) => {
             >
               Password
             </label>
-            <input
-              ref={passwordRef}
-              className="input"
-              id="login-password"
-              type="password"
-              placeholder="Password"
-              aria-invalid={passwordError ? "true" : "false"}
-              aria-labelledby="login-password-label"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="relative">
+              <input
+                ref={passwordRef}
+                className="input"
+                id="login-password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                aria-invalid={passwordError ? "true" : "false"}
+                aria-labelledby="login-password-label"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 flex items-center px-2"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeSlashIcon className="h-5 w-5 text-darkGray" /> : <EyeIcon className="h-5 w-5 text-darkGray" />}
+              </button>
+            </div>
             {passwordError && (
               <div aria-live="assertive" className="text-xs italic mt-2">
                 <div>{passwordError}</div>
