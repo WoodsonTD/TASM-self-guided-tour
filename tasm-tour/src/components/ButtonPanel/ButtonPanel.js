@@ -2,12 +2,24 @@ import Button from './Button';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 export default function ButtonPanel({ setExhibitID, nextExhibit, prevExhibit }) {
+  const goToNext = () => {
+    console.log("Next exhibit ID: " + nextExhibit);
+    setExhibitID(nextExhibit);
+    window.location.search = `?exhibitID=${nextExhibit}`;
+  };
+
+  const goToPrev = () => {
+    console.log("Previous exhibit ID: " + prevExhibit);
+    setExhibitID(prevExhibit);
+    window.location.search = `?exhibitID=${prevExhibit}`;
+  };
+
   return (
     <div className="flex justify-around p-4">
       {prevExhibit ?
         <Button
           label="Prev"
-          onClick={() => setExhibitID(prevExhibit)}
+          onClick={() => setExhibitID(goToPrev, prevExhibit)}
           icon={ChevronLeftIcon}
           iconProps={{ className: "w-7 h-7" }}
           iconPosition="left"
@@ -17,7 +29,7 @@ export default function ButtonPanel({ setExhibitID, nextExhibit, prevExhibit }) 
       {nextExhibit ?
         <Button
           label="Next"
-          onClick={() => setExhibitID(nextExhibit)}
+          onClick={() => setExhibitID(goToNext, nextExhibit)}
           icon={ChevronRightIcon}
           iconProps={{ className: "w-7 h-7" }}
           iconPosition="right"
