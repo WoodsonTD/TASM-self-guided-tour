@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { query, where, getDocs, collection } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { logEvent } from 'firebase/analytics';
@@ -8,7 +9,8 @@ import VideoView from '../VideoView/VideoView';
 import ImageView from '../ImageView/ImageView';
 import ButtonPanel from '../ButtonPanel/ButtonPanel';
 
-export default function ExhibitPage({ exhibitID, setExhibitID }) {
+export default function ExhibitPage() {
+  const { exhibitID } = useParams();
   const [exhibit, setExhibit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -97,7 +99,7 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
         {exhibit.content}
       </p>
       {(exhibit.articleLink && !(exhibit.articleLink[0].link === "" || exhibit.articleLink[0].title === "")) ? <FurtherReading articleLink={exhibit.articleLink} /> : null}
-      <ButtonPanel setExhibitID={setExhibitID} nextExhibit={exhibit.next} prevExhibit={exhibit.prev} />
+      <ButtonPanel nextExhibit={exhibit.next} prevExhibit={exhibit.prev} />
     </div>
   );
 }
