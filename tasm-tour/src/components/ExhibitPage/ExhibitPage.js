@@ -21,40 +21,42 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
       setError(null);
       setLoading(true);
       setExhibit(null);
+
       try {
-        setLoading(true);
         const queryResults = query(collection(db, 'exhibits'), where('exhibitID', '==', exhibitID));
         const exhibitResults = await getDocs(queryResults);
         if (!exhibitResults.empty) {
           const exhibitSnapshot = exhibitResults.docs[0];
-          setExhibit(exhibitSnapshot.data());
+          const exhibitData = exhibitSnapshot.data();
+          setExhibit(exhibitData);
           if (exhibitResults.size > 1) {
-            console.warn("Multiple exhibits found with the same ID: " + exhibitID);
             console.warn("Multiple exhibits found with the same ID: " + exhibitID);
           }
         } else {
           console.error("Exhibit not found.\n" + exhibitID);
           setError('Exhibit not found.\n' + exhibitID);
         }
-
-        setLoading(false);
       } catch (error) {
         setError("Failed to fetch exhibit data.\n" + error);
+      } finally {
         setLoading(false);
       }
+    };
 
+    fetchData();
+  }, [exhibitID]);
+
+  useEffect(() => {
+    if (prevTimestamp && exhibit) {
       const currentTimestamp = Date.now();
-      if (prevTimestamp) {
-        const dwellTime = currentTimestamp - prevTimestamp;
-        logEvent(db, exhibit.exhibitTitle, { dwellTime });
-      }
+      const dwell = currentTimestamp - prevTimestamp;
+      logEvent(db, exhibit.exhibitTitle, { dwellTime: dwell });
       setPrevTimestamp(currentTimestamp);
       console.log("Logging exhibit_scanned event for exhibit: " + exhibitID);
       logEvent(db, 'exhibit_scanned', { exhibitID, timestamp: currentTimestamp });
     }
+  }, [exhibit, prevTimestamp, exhibitID]);
 
-    fetchData();
-  }, [exhibitID]);
 
   if (loading) {
     return <div className={errorStyle}>Loading...</div>;
@@ -63,7 +65,6 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
   if (error) {
     return <div className={errorStyle} style={{ whiteSpace: "pre-wrap" }}> Error: {error}</div>;
   }
-
 
   if (!exhibit) {
     return (
@@ -86,7 +87,6 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
       media = null;
   }
 
-
   return (
     <div className="">
       <ExhibitTitle title={exhibit.title} bodyText={exhibit.content} />
@@ -105,7 +105,7 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
 export function FurtherReading({ articleLink }) {
   return (
     <div className="flex flex-col items-center justify-center">
-      <h2 className="text-5xl text-black mb-4">Further Reading</h2>
+      <h2 className="text-5xl text-black mb-4">Additional Information</h2>
       <ul className='list-disc text-lg'>
         {articleLink.map((item, index) => (
           <li key={index} className='hover:-translate-y-0.5 transform transition'>
