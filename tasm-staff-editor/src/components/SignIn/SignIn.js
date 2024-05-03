@@ -3,9 +3,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import Button from "../ButtonPanel/Button";
 import logo from '../../assets/images/tasm-logo-p-500.png';
-import { ChevronRightIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
-const SignIn = ({ onClose, onSignUpClick }) => {
+const SignIn = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -55,7 +55,7 @@ const SignIn = ({ onClose, onSignUpClick }) => {
   };
 
   return (
-    <div className=" relative flex justify-center items-center h-screen">
+    <div className="relative flex justify-center items-center h-screen">
       <div className="absolute top-0 mt-2">
         <img src={logo} alt='TASM Logo' className="object-scale-down h-48 m-2" />
       </div>
@@ -125,20 +125,11 @@ const SignIn = ({ onClose, onSignUpClick }) => {
               </div>
             )}
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-end">
             <Button
               label="Log In"
               type="submit"
               className="btn rounded-xl py-2 px-3 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
-            />
-            <Button
-              label="Sign Up"
-              type="button"
-              icon={ChevronRightIcon}
-              iconProps={{ className: "w-6 h-6" }}
-              iconPosition="right"
-              className="btn rounded-xl py-2 pl-3 pr-0.5 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
-              onClick={onSignUpClick}
             />
           </div>
         </form>
