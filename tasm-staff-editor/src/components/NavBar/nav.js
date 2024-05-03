@@ -1,7 +1,7 @@
 import { ChevronDoubleLeftIcon } from '@heroicons/react/24/outline';
 import Button from '../ButtonPanel/Button';
 
-function Nav({entry, setEntry}) {
+function Nav({ entry, setEntry, setIsSignUpVisible }) {
 
   const handleBack = () => {
     const confirmDelete = window.confirm("Are you sure you want to go back? Any unsaved changes will be lost.");
@@ -28,7 +28,14 @@ function Nav({entry, setEntry}) {
           className={"btn_nav py-2 px-4"}
           />
         </span>
-        : null
+        :
+        <span className="">
+          <Button
+          onClick={() => setIsSignUpVisible(true)}
+          label="Sign Up"
+          className={"btn_nav py-2 px-4"}
+        />
+      </span>
       }
     </div>
   )

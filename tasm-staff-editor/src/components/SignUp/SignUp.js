@@ -1,15 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import Button from "../ButtonPanel/Button";
 import logo from '../../assets/images/tasm-logo-p-500.png';
-import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
-const SignUp = ({ onClose, onSignInClick }) => {
+const SignUp = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const modalRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      onClose();  // Close the modal if click is outside
+    }
+  };
+
+  // Add event listener when the component mounts
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Remove event listener on cleanup
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Refs for input fields to manage focus
   const emailRef = useRef(null);
@@ -44,6 +61,10 @@ const SignUp = ({ onClose, onSignInClick }) => {
         </p>
       );
     });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = (e) => {
@@ -99,11 +120,11 @@ const SignUp = ({ onClose, onSignInClick }) => {
   };
 
   return (
-    <div className=" relative flex justify-center items-center h-screen">
+    <div className="fixed inset-0 z-50 flex justify-center items-center h-screen bg-black bg-opacity-30 backdrop-blur-md">
       <div className="absolute top-0 mt-2">
         <img src={logo} alt='TASM Logo' className="object-scale-down h-48 m-2" />
       </div>
-      <div className="w-full max-w-xs">
+      <div ref={modalRef} className="w-full max-w-xs">
         <form
           noValidate
           className="bg-gray shadow-md rounded-lg px-8 py-6 mb-4 drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
@@ -141,17 +162,27 @@ const SignUp = ({ onClose, onSignInClick }) => {
             >
               Password
             </label>
-            <input
-              ref={passwordRef}
-              className="input"
-              id="password"
-              type="password"
-              placeholder="Password"
-              aria-invalid={passwordError ? "true" : "false"}
-              aria-labelledby="password-label"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="relative">
+              <input
+                ref={passwordRef}
+                className="input"
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                aria-invalid={passwordError ? "true" : "false"}
+                aria-labelledby="password-label"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 flex items-center px-2"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeSlashIcon className="h-5 w-5 text-darkGray" /> : <EyeIcon className="h-5 w-5 text-darkGray" />}
+              </button>
+            </div>
             {passwordError && (
               <div className="text-xs italic mt-2" aria-live="assertive">
                 <p>Your password needs to:</p>
@@ -161,18 +192,21 @@ const SignUp = ({ onClose, onSignInClick }) => {
           </div>
           <div className="flex justify-between">
             <Button
-                label="Log In"
-                type="button"
-                icon={ChevronLeftIcon}
-                iconProps={{ className: "w-6 h-6" }}
-                iconPosition="left"
-                className="btn rounded-xl py-2 pl-0.5 pr-3 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
-                onClick={onSignInClick}
-              />
+              label="Cancel"
+              type="button"
+              icon={XMarkIcon}
+              iconProps={{ className: "w-6 h-6" }}
+              iconPosition="left"
+              className="btn rounded-xl py-2 pr-2.5 pl-1.5 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+              onClick={onClose}
+            />
             <Button
               label="Sign Up"
               type="submit"
-              className="btn rounded-xl p-2 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
+              icon={CheckIcon}
+              iconProps={{ className: "w-6 h-6" }}
+              iconPosition="left"
+              className="btn rounded-xl py-2 pr-2.5 pl-1.5 text-lg drop-shadow-[2px_3px_4px_rgba(0,0,0,0.25)]"
             />
           </div>
         </form>
