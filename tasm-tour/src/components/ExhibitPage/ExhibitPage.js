@@ -17,18 +17,15 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
   const errorStyle = 'md:w-2/3 m-auto text-center';
 
   useEffect(() => {
-    console.log("Fetching exhibit data for ID1: " + exhibitID);
     const fetchData = async () => {
       setError(null);
       setLoading(true);
       setExhibit(null);
       try {
-        console.log("Fetching exhibit data for ID2: " + exhibitID);
         setLoading(true);
         const queryResults = query(collection(db, 'exhibits'), where('exhibitID', '==', exhibitID));
         const exhibitResults = await getDocs(queryResults);
         if (!exhibitResults.empty) {
-          console.log("Exhibit found!\n" + exhibitResults.docs[0].data());
           const exhibitSnapshot = exhibitResults.docs[0];
           setExhibit(exhibitSnapshot.data());
           if (exhibitResults.size > 1) {
@@ -41,7 +38,6 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
         }
 
         setLoading(false);
-        console.log("Exhibit loaded successfully!\n" + exhibit);
       } catch (error) {
         setError("Failed to fetch exhibit data.\n" + error);
         setLoading(false);
@@ -49,7 +45,6 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
 
       const currentTimestamp = Date.now();
       if (prevTimestamp) {
-        console.log("Dwell time: " + (currentTimestamp - prevTimestamp));
         const dwellTime = currentTimestamp - prevTimestamp;
         logEvent(db, exhibit.exhibitTitle, { dwellTime });
       }
@@ -59,7 +54,6 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
     }
 
     fetchData();
-    console.log("Exhibit data fetched for ID3: " + exhibitID);
   }, [exhibitID]);
 
   if (loading) {
@@ -77,8 +71,6 @@ export default function ExhibitPage({ exhibitID, setExhibitID }) {
     );
   }
 
-
-  console.log("Exhibit loaded successfully!\n" + exhibit);
   let media = null;
   switch (exhibit.mediaType) {
     case 'model':

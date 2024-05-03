@@ -13,20 +13,20 @@ const SignUp = ({ onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
   const modalRef = useRef(null);
 
-  const handleClickOutside = (event) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      onClose();  // Close the modal if click is outside
-    }
-  };
-
-  // Add event listener when the component mounts
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClose();  // Close the modal if click is outside
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       // Remove event listener on cleanup
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [onClose]);
+
 
   // Refs for input fields to manage focus
   const emailRef = useRef(null);
